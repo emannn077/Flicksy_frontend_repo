@@ -1,3 +1,5 @@
+import Comment from "./Comment"
+
 const Post = () => {
   return (
     <>
