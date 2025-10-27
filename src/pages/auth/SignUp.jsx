@@ -25,7 +25,88 @@ const SignUp = () => {
     setFormValues(initialState)
   }
 
-  return <></>
+  return (
+    <>
+      <div>
+        <form onSubmit={handleSubmit}>
+          <div className="input-class">
+            <label htmlFor="firstName">First Name :</label>
+            <input
+              type="text"
+              name="firstName"
+              placeholder="first name"
+              onChange={handleChange}
+              value={formValues.firstName}
+              required
+              autoComplete="firstName"
+            />
+          </div>
+
+          <div className="input-class">
+            <label htmlFor="lastName">last Name :</label>
+            <input
+              type="text"
+              name="lastName"
+              placeholder="last name"
+              onChange={handleChange}
+              value={formValues.lastName}
+              required
+              autoComplete="lastName"
+            />
+          </div>
+
+          <div className="input-class">
+            <label htmlFor="email">Your email :</label>
+            <input
+              type="text"
+              name="email"
+              placeholder="example@example.com"
+              onChange={handleChange}
+              value={formValues.email}
+              required
+              autoComplete="email"
+            />
+          </div>
+
+          <div className="input-class">
+            <label htmlFor="password">Your email :</label>
+            <input
+              type="text"
+              name="password"
+              placeholder="password"
+              onChange={handleChange}
+              value={formValues.password}
+              required
+              autoComplete="off"
+            />
+          </div>
+
+          <div className="input-class">
+            <label htmlFor="confirmPassword">Your email :</label>
+            <input
+              type="text"
+              name="confirmPassword"
+              placeholder="confirmPassword"
+              onChange={handleChange}
+              value={formValues.confirmPassword}
+              required
+              autoComplete="off"
+            />
+          </div>
+
+          <button
+            disabled={
+              !formValues.email ||
+              (!formValues.password &&
+                formValues.password === formValues.confirmPassword)
+            }
+          >
+            Register
+          </button>
+        </form>
+      </div>
+    </>
+  )
 }
 
 export default SignUp
