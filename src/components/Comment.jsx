@@ -1,9 +1,13 @@
 import Post from "./Post"
 import { useState } from "react"
+
 const Comment = () => {
+  const [commentState, setCommentState] = useState("")
   return (
     <>
-      <div></div>
+      <div>
+        <form action=""></form>
+      </div>
     </>
   )
 }
