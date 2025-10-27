@@ -69,7 +69,7 @@ const SignUp = () => {
           </div>
 
           <div className="input-class">
-            <label htmlFor="password">Your email :</label>
+            <label htmlFor="password">Your Password :</label>
             <input
               type="text"
               name="password"
@@ -82,7 +82,7 @@ const SignUp = () => {
           </div>
 
           <div className="input-class">
-            <label htmlFor="confirmPassword">Your email :</label>
+            <label htmlFor="confirmPassword">confirm Password :</label>
             <input
               type="text"
               name="confirmPassword"
