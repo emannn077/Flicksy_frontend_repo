@@ -1,9 +1,17 @@
 import { useState } from "react"
-i
+import { Route, Routes } from "react-router-dom"
+
 import "./App.css"
+import CameraPage from "./pages/Camera"
 
 const App = () => {
-  return <></>
+  return (
+    <>
+      <Routes>
+        <Route path="/camera" element={<CameraPage />} />
+      </Routes>
+    </>
+  )
 }
 
 export default App
