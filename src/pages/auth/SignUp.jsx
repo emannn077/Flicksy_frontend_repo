@@ -1,8 +1,9 @@
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
-import DomeBackground from "../../components/DomeBackground"
+import DomeBackground from "/src/components/DomeBackground"
 import axios from "axios"
 import "./App.css"
+
 const SignUp = () => {
   let navigate = useNavigate()
   const initialState = {
@@ -34,7 +35,12 @@ const SignUp = () => {
 
   return (
     <>
-      <div>
+      <DomeBackground />
+
+      <div className="signup-page"></div>
+      <div className="signup-box">
+        <h2>Sign Up</h2>
+
         <form onSubmit={handleSubmit}>
           <div className="input-class">
             <label htmlFor="firstName">First Name :</label>
