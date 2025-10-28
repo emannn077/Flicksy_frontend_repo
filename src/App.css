@@ -1,14 +1,37 @@
+/* Ensure the sphere is always in the back */
+.sphere-root {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -1; /* behind all pages */
+  background-color: #000; /* solid black background */
+}
+
+/* Common float animation */
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+/* Sign-in page */
 .signin-page {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
   position: relative;
-  z-index: 1;
+  z-index: 10; /* higher than sphere */
 }
 
 .signin-box {
-  background: rgba(5, 4, 4, 0.2);
+  background: rgba(0, 0, 0, 0.6); /* dark for contrast */
   border-radius: 18px;
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
@@ -20,16 +43,6 @@
   border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
-@keyframes float {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-8px);
-  }
-}
-
 .signin-box h2 {
   text-align: center;
   color: #fff;
@@ -37,54 +50,18 @@
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
 }
 
-.input-class {
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 1rem;
-}
-
-.input-class label {
-  color: #eee;
-  margin-bottom: 0.3rem;
-  font-weight: 500;
-}
-
-.input-class input {
-  padding: 0.6rem;
-  border-radius: 8px;
-  border: none;
-  background: rgba(255, 255, 255, 0.9);
-  font-size: 1rem;
-}
-
-button {
-  width: 100%;
-  padding: 0.7rem;
-  border: none;
-  border-radius: 8px;
-  background-color: rgba(0, 123, 255, 0.8);
-  color: #fff;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: all 0.3s;
-}
-
-button:hover {
-  background-color: rgba(0, 123, 255, 1);
-  transform: scale(1.03);
-}
-
+/* Sign-up page */
 .signup-page {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
   position: relative;
-  z-index: 1;
+  z-index: 10; /* same as sign-in */
 }
 
 .signup-box {
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(0, 0, 0, 0.6); /* dark for contrast */
   border-radius: 18px;
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
@@ -96,16 +73,6 @@ button:hover {
   border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
-@keyframes float {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-8px);
-  }
-}
-
 .signup-box h2 {
   text-align: center;
   color: #fff;
@@ -113,6 +80,7 @@ button:hover {
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
 }
 
+/* Inputs & Buttons */
 .input-class {
   display: flex;
   flex-direction: column;
