@@ -4,7 +4,7 @@ import axios from "axios"
 
 const SignIn = () => {
   let navigate = useNavigate()
-  const initialState = { email: "", password: "" }
+  const initialState = { username: "", password: "" }
 
   const [formValues, setFormValues] = useState(initialState)
 
@@ -29,15 +29,15 @@ const SignIn = () => {
       <div className="form-container">
         <form className="signin" onSubmit={handleSubmit}>
           <div className="input-class">
-            <label htmlFor="email">Email</label>
+            <label htmlFor="username">User Name :</label>
             <input
-              name="email"
-              type="email"
-              placeholder="example@example.com"
+              type="text"
+              name="username"
+              placeholder="username"
               onChange={handleChange}
-              value={formValues.email}
+              value={formValues.username}
               required
-              autoComplete="email"
+              autoComplete="username"
             />
           </div>
           <div className="input-class">
@@ -52,7 +52,7 @@ const SignIn = () => {
               autoComplete="off"
             />
           </div>
-          <button disabled={!formValues.email || !formValues.password}>
+          <button disabled={!formValues.username || !formValues.password}>
             Sign In
           </button>
         </form>
