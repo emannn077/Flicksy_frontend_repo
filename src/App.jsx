@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Route, Routes } from "react-router"
 import SignIn from "./pages/auth/SignIn"
 import SignUp from "./pages/auth/SignUp"
@@ -8,6 +8,23 @@ import Header from "./components/Header"
 import "./App.css"
 
 const App = () => {
+  const [user, setUser] = useState(null)
+
+  const handleLogOut = () => {
+    setUser(null)
+    localStorage.clear
+  }
+
+  useEffect(() => {
+    const checkToken = () => {
+      setUser()
+    }
+    const token = localStorage.getItem("token")
+    if (token) {
+      checkToken()
+    }
+  }, [])
+
   return (
     <>
       <div>
@@ -15,8 +32,8 @@ const App = () => {
         <main>
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/signup" element={<SignUp />} />
-            <Route path="/signin" element={<SignIn />} />
+            <Route path="/sign-up" element={<SignUp />} />
+            <Route path="/sign-in" element={<SignIn />} />
           </Routes>
         </main>
       </div>

@@ -12,9 +12,16 @@ const SignIn = () => {
     setFormValues({ ...formValues, [e.target.name]: e.target.value })
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    setFormValues(initialState)
+    const response = await axios.post(
+      "http://localhost:3001/auth/sign-in",
+      formValues
+    )
+    if (response.status === 200) {
+      setFormValues(initialState)
+      navigate("/")
+    }
   }
 
   return (
@@ -34,10 +41,10 @@ const SignIn = () => {
             />
           </div>
           <div className="input-class">
-            <label htmlFor="password">Password</label>
+            <label htmlFor="password">Your Password :</label>
             <input
-              name="password"
               type="password"
+              name="password"
               placeholder="password"
               onChange={handleChange}
               value={formValues.password}
