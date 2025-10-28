@@ -1,6 +1,8 @@
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
+import DomeGallery from "../../components/DomeGallery"
 import axios from "axios"
+import "/src/App.css"
 
 const SignIn = () => {
   const navigate = useNavigate()
@@ -39,39 +41,43 @@ const SignIn = () => {
   }
 
   return (
-    <div className="form-container">
-      <form className="signin" onSubmit={handleSubmit}>
-        <div className="input-class">
-          <label htmlFor="username">User Name:</label>
-          <input
-            type="text"
-            name="username"
-            placeholder="username"
-            onChange={handleChange}
-            value={formValues.username}
-            required
-            autoComplete="username"
-          />
+    <>
+      <DomeGallery />
+      <div className="signin-page">
+        <div className="signin-box">
+          <h2>Sign In</h2>
+          <form className="signin" onSubmit={handleSubmit}>
+            <div className="input-class">
+              <label htmlFor="username">User Name :</label>
+              <input
+                type="text"
+                name="username"
+                placeholder="username"
+                onChange={handleChange}
+                value={formValues.username}
+                required
+                autoComplete="username"
+              />
+            </div>
+            <div className="input-class">
+              <label htmlFor="password">Your Password :</label>
+              <input
+                type="password"
+                name="password"
+                placeholder="password"
+                onChange={handleChange}
+                value={formValues.password}
+                required
+                autoComplete="off"
+              />
+            </div>
+            <button disabled={!formValues.username || !formValues.password}>
+              Sign In
+            </button>
+          </form>
         </div>
-
-        <div className="input-class">
-          <label htmlFor="password">Password:</label>
-          <input
-            type="password"
-            name="password"
-            placeholder="password"
-            onChange={handleChange}
-            value={formValues.password}
-            required
-            autoComplete="off"
-          />
-        </div>
-
-        <button disabled={!formValues.username || !formValues.password}>
-          Sign In
-        </button>
-      </form>
-    </div>
+      </div>
+    </>
   )
 }
 

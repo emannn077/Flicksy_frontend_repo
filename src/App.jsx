@@ -8,6 +8,7 @@ import CameraPage from "./pages/Camera"
 import ChallengeCard from "./components/ChallengeCard"
 import ChallengeForm from "./pages/ChallengeForm"
 import ChallengeList from "./pages/ChallengeList"
+import DomeGallery from "./components/DomeGallery"
 import ProfilePage from "./pages/ProfilePage"
 import "./App.css"
 
