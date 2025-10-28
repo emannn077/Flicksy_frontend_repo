@@ -1,7 +1,11 @@
 .sphere-root {
-  position: relative;
-  width: 100%;
-  height: 100%;
+  position: fixed; /* cover the whole viewport */
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -1;
+  background-color: #000;
   --radius: 520px;
   --viewer-pad: 72px;
   --circ: calc(var(--radius) * 3.14);
@@ -216,29 +220,4 @@ main.sphere-main {
 
 .edge-fade--bottom {
   bottom: 0;
-}
-main.sphere-main {
-  position: absolute;
-  inset: 0;
-  display: grid;
-  place-items: center;
-  overflow: hidden;
-  touch-action: none;
-  user-select: none;
-  background: transparent;
-  animation: slow-rotate 60s linear infinite; /* gentle slow rotation */
-}
-
-@keyframes slow-rotate {
-  from {
-    transform: rotateY(0deg);
-  }
-  to {
-    transform: rotateY(360deg);
-  }
-}
-
-/* Slight overlay tint for better text contrast */
-.overlay {
-  background-image: radial-gradient(rgba(0, 0, 0, 0.2) 65%, #060010 100%);
 }

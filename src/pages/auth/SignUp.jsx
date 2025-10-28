@@ -1,8 +1,8 @@
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
-import DomeBackground from "/src/components/DomeBackground"
+import DomeGallery from "../../components/DomeGallery"
 import axios from "axios"
-import "./App.css"
+import "/src/App.css"
 
 const SignUp = () => {
   let navigate = useNavigate()
@@ -35,7 +35,7 @@ const SignUp = () => {
 
   return (
     <>
-      <DomeBackground />
+      <DomeGallery />
 
       <div className="signup-page"></div>
       <div className="signup-box">
