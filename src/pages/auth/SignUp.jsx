@@ -1,7 +1,8 @@
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
+import DomeBackground from "../../components/DomeBackground"
 import axios from "axios"
-
+import "./App.css"
 const SignUp = () => {
   let navigate = useNavigate()
   const initialState = {
