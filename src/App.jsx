@@ -8,6 +8,7 @@ import CameraPage from "./pages/Camera"
 import ChallengeCard from "./components/ChallengeCard"
 import ChallengeForm from "./pages/ChallengeForm"
 import ChallengeList from "./pages/ChallengeList"
+import ProfilePage from "./pages/ProfilePage"
 import "./App.css"
 
 const App = () => {
@@ -41,6 +42,8 @@ const App = () => {
             <Route path="/camera" element={<CameraPage />} />
             <Route path="/add-challenge" element={<ChallengeForm />} />
             <Route path="/challenges" element={<ChallengeList />} />
+            <Route path="/profile" element={<ProfilePage />} />
+            {/* <Route path={`/user/${user._id}`} element={<Profile />} /> */}
           </Routes>
         </main>
       </div>

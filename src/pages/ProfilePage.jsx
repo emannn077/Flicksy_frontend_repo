@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react"
+import { useNavigate } from "react-router-dom"
 import axios from "axios"
 import Feed from "../components/Feed"
 
@@ -6,6 +7,7 @@ const ProfilePage = () => {
   const [user, setUser] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState("")
+  const navigate = useNavigate() // ✅ Add this
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -17,10 +19,10 @@ const ProfilePage = () => {
         }
 
         const payload = JSON.parse(atob(token.split(".")[1]))
-        const userId = payload.id
+        const user = payload
 
         const res = await axios.get(
-          `http://localhost:3001/users/profile/${userId}`,
+          `http://localhost:3001/users/profile/${user._id}`,
           {
             headers: { Authorization: `Bearer ${token}` },
           }
@@ -49,7 +51,7 @@ const ProfilePage = () => {
   }, [])
 
   return (
-    <div>
+    <div style={{ padding: "20px" }}>
       {user ? (
         <>
           <h2>{user.username}'s Profile</h2>
@@ -61,7 +63,26 @@ const ProfilePage = () => {
           />
           <p>Email: {user.email}</p>
           <p>Points: {user.points}</p>
-          <Feed userId={user._id} />
+
+          {/* ✅ Add Post Button */}
+          <button
+            onClick={() => navigate("/camera")}
+            style={{
+              marginTop: "15px",
+              padding: "10px 20px",
+              borderRadius: "8px",
+              border: "none",
+              backgroundColor: "#4CAF50",
+              color: "white",
+              cursor: "pointer",
+            }}
+          >
+            + Add Post
+          </button>
+
+          <hr style={{ margin: "20px 0" }} />
+
+          <Feed user={user} />
         </>
       ) : null}
     </div>

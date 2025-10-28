@@ -1,0 +1,26 @@
+.post {
+  border: 1px solid #ccc;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 8px;
+}
+
+.post-image {
+  width: 100%;
+  height: auto;
+  border-radius: 4px;
+}
+
+.post-content {
+  margin-top: 0.5rem;
+}
+
+.post-caption {
+  font-size: 1rem;
+  color: #333;
+}
+
+.post-user {
+  font-size: 0.875rem;
+  color: #777;
+}

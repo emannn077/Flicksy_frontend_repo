@@ -1,5 +1,5 @@
 import React from "react"
-import "./Post.css"
+import "/public/stylesheet/style.css"
 
 const Post = ({ post }) => {
   return (

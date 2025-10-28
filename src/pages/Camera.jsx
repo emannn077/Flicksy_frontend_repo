@@ -38,11 +38,15 @@ const CameraPage = () => {
     try {
       setLoading(true)
 
-      // 🔹 Replace with actual logged-in user ID
-      const user_id =
-        localStorage.getItem("user_id") || "64f12ab3cde4567890abcd12"
+      const user_id = localStorage.getItem("user_id")
+      const token = localStorage.getItem("token")
 
-      // Build payload matching schema
+      if (!user_id || !token) {
+        alert("Please log in before posting!")
+        navigate("/signin")
+        return
+      }
+
       const payload = {
         user_id,
         challenge_id: mode === "challenge" ? challenge_id : null,
@@ -56,12 +60,19 @@ const CameraPage = () => {
 
       console.log("📤 Payload:", payload)
 
-      await axios.post("http://localhost:3001/post", payload)
+      await axios.post(`http://localhost:3001/post/user/${user_id}`, payload, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+
       alert("✅ Post uploaded successfully!")
-      navigate("/")
+      navigate("/profile")
     } catch (err) {
       console.error("❌ Upload failed:", err)
-      alert("Failed to post photo. Check console for details.")
+      alert(
+        `Failed to post photo. ${
+          err.response?.data?.message || "Check console for details."
+        }`
+      )
     } finally {
       setLoading(false)
     }
