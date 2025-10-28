@@ -26,7 +26,7 @@ const ChallengeForm = () => {
   }
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form className="challenge-form" onSubmit={handleSubmit}>
       <h2>Add a new Challenge</h2>
 
       <label>Title</label>
