@@ -7,11 +7,10 @@ const SignUp = () => {
   const initialState = {
     firstName: "",
     lastName: "",
+    username: "",
     email: "",
     password: "",
-    confirmPassword: "",
-    //profile_picture: "",
-    //points: "",
+    profile_picture: "",
   }
 
   const [formValues, setFormValues] = useState(initialState)
@@ -20,9 +19,16 @@ const SignUp = () => {
     setFormValues({ ...formValues, [e.target.name]: e.target.value })
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    setFormValues(initialState)
+    const response = await axios.post(
+      "http://localhost:3001/auth/sign-up",
+      formValues
+    )
+    if (response.status === 200) {
+      setFormValues(initialState)
+      navigate("/sign-in")
+    }
   }
 
   return (
@@ -56,9 +62,22 @@ const SignUp = () => {
           </div>
 
           <div className="input-class">
-            <label htmlFor="email">Your email :</label>
+            <label htmlFor="username">User Name :</label>
             <input
               type="text"
+              name="username"
+              placeholder="username"
+              onChange={handleChange}
+              value={formValues.username}
+              required
+              autoComplete="username"
+            />
+          </div>
+
+          <div className="input-class">
+            <label htmlFor="email">Your email :</label>
+            <input
+              type="email"
               name="email"
               placeholder="example@example.com"
               onChange={handleChange}
@@ -67,28 +86,25 @@ const SignUp = () => {
               autoComplete="email"
             />
           </div>
-
-          <div className="input-class">
-            <label htmlFor="password">Your Password :</label>
+          <div>
+            <label htmlFor="profile_picture">Image:</label>
             <input
-              type="text"
-              name="password"
-              placeholder="password"
-              onChange={handleChange}
-              value={formValues.password}
               required
-              autoComplete="off"
+              type="text"
+              name="profile_picture"
+              onChange={handleChange}
+              value={formValues.profile_picture}
             />
           </div>
 
           <div className="input-class">
-            <label htmlFor="confirmPassword">confirm Password :</label>
+            <label htmlFor="password">Your Password :</label>
             <input
-              type="text"
-              name="confirmPassword"
-              placeholder="confirmPassword"
+              type="password"
+              name="password"
+              placeholder="password"
               onChange={handleChange}
-              value={formValues.confirmPassword}
+              value={formValues.password}
               required
               autoComplete="off"
             />

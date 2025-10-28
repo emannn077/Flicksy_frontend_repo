@@ -4,7 +4,7 @@ import axios from "axios"
 
 const SignIn = () => {
   let navigate = useNavigate()
-  const initialState = { email: "", password: "" }
+  const initialState = { username: "", password: "" }
 
   const [formValues, setFormValues] = useState(initialState)
 
@@ -12,9 +12,16 @@ const SignIn = () => {
     setFormValues({ ...formValues, [e.target.name]: e.target.value })
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    setFormValues(initialState)
+    const response = await axios.post(
+      "http://localhost:3001/auth/sign-in",
+      formValues
+    )
+    if (response.status === 200) {
+      setFormValues(initialState)
+      navigate("/")
+    }
   }
 
   return (
@@ -22,22 +29,22 @@ const SignIn = () => {
       <div className="form-container">
         <form className="signin" onSubmit={handleSubmit}>
           <div className="input-class">
-            <label htmlFor="email">Email</label>
+            <label htmlFor="username">User Name :</label>
             <input
-              name="email"
-              type="email"
-              placeholder="example@example.com"
+              type="text"
+              name="username"
+              placeholder="username"
               onChange={handleChange}
-              value={formValues.email}
+              value={formValues.username}
               required
-              autoComplete="email"
+              autoComplete="username"
             />
           </div>
           <div className="input-class">
-            <label htmlFor="password">Password</label>
+            <label htmlFor="password">Your Password :</label>
             <input
-              name="password"
               type="password"
+              name="password"
               placeholder="password"
               onChange={handleChange}
               value={formValues.password}
@@ -45,7 +52,7 @@ const SignIn = () => {
               autoComplete="off"
             />
           </div>
-          <button disabled={!formValues.email || !formValues.password}>
+          <button disabled={!formValues.username || !formValues.password}>
             Sign In
           </button>
         </form>
