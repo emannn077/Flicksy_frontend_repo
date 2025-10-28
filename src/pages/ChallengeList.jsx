@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import axios from 'axios'
+import './ChallengeList.css'
 
 const ChallengeList = () => {
   const [challenges, setChallenges] = useState([])
@@ -21,34 +22,34 @@ const ChallengeList = () => {
     fetchChallenges()
   }, [])
 
-  // const handleDelete = async (_id) => {
-  //   await axios.delete(`http://localhost:3001/challenge/${_id}`)
-  //   setChallenges(challenges.filter((ch) => ch._id !== _id))
-  // }
-
   const pickRandomChallenge = () => {
     if (challenges.length === 0) return
     const randomIndex = Math.floor(Math.random() * challenges.length)
     setRandomChallenge(challenges[randomIndex])
   }
+
   return (
-    <div>
+    <div className="challenge-list">
       <h2>All Challenges</h2>
 
       <ul>
         {challenges.map((ch) => (
           <li key={ch._id}>
-            <strong>{ch.title}</strong> - {ch.description} ({ch.points} points)
-            {/* <button onClick={() => handleDelete(ch._id)}>Delete</button> */}
+            <span>
+              <strong>{ch.title}</strong> - {ch.description} ({ch.points}{' '}
+              points)
+            </span>
           </li>
         ))}
       </ul>
-      <button onClick={pickRandomChallenge}>pick random challenge</button>
+
+      <button onClick={pickRandomChallenge}>Pick Random Challenge</button>
+
       {randomChallenge && (
-        <div>
-          <h3>Random challenge picked</h3>
-          <strong>{randomChallenge.title}</strong>:{randomChallenge.description}{' '}
-          ({randomChallenge.points} points)
+        <div className="random-challenge">
+          <h3>Random Challenge Picked</h3>
+          <strong>{randomChallenge.title}</strong>:{' '}
+          {randomChallenge.description} ({randomChallenge.points} points)
         </div>
       )}
     </div>
