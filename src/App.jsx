@@ -2,7 +2,7 @@ import { useState } from "react"
 import { Route, Routes } from "react-router"
 import SignIn from "./pages/auth/SignIn"
 import SignUp from "./pages/auth/SignUp"
-import Feed from "./components/Feed"
+import Home from "./components/Home"
 
 import "./App.css"
 
