@@ -6,6 +6,7 @@ import Home from "./components/Home"
 import Header from "./components/Header"
 
 import "./App.css"
+import CameraPage from "./pages/Camera"
 
 const App = () => {
   return (
@@ -17,6 +18,7 @@ const App = () => {
             <Route path="/" element={<Home />} />
             <Route path="/signup" element={<SignUp />} />
             <Route path="/signin" element={<SignIn />} />
+            <Route path="/camera" element={<CameraPage />} />
           </Routes>
         </main>
       </div>
