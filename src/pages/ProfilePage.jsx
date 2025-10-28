@@ -1,0 +1,71 @@
+import { useEffect, useState } from "react"
+import axios from "axios"
+import Feed from "../components/Feed"
+
+const ProfilePage = () => {
+  const [user, setUser] = useState(null)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState("")
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const token = localStorage.getItem("token")
+        if (!token) {
+          setError("Unauthorized: No token found. Please log in again.")
+          return
+        }
+
+        const payload = JSON.parse(atob(token.split(".")[1]))
+        const userId = payload.id
+
+        const res = await axios.get(
+          `http://localhost:3001/users/profile/${userId}`,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        )
+
+        setUser(res.data)
+      } catch (err) {
+        console.error("cannot load the profile : ", err)
+
+        if (err.response && err.response.status === 500) {
+          setError(
+            `Server Error (500): ${
+              err.response.data?.message ||
+              "Something went wrong on the server."
+            }`
+          )
+        } else {
+          setError("Failed to load profile. Please try again later.")
+        }
+      }
+
+      setLoading(false)
+    }
+
+    fetchUser()
+  }, [])
+
+  return (
+    <div>
+      {user ? (
+        <>
+          <h2>{user.username}'s Profile</h2>
+          <img
+            src={user.profile_picture || "/default-avatar.png"}
+            alt="Profile"
+            width="100"
+            height="100"
+          />
+          <p>Email: {user.email}</p>
+          <p>Points: {user.points}</p>
+          <Feed userId={user._id} />
+        </>
+      ) : null}
+    </div>
+  )
+}
+
+export default ProfilePage
