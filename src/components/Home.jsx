@@ -8,7 +8,7 @@ const Home = () => {
       <NavLink />
       <div>
         <div className="signin-homepage">
-          <button onClick={() => navigate("/signin")}>
+          <button onClick={() => navigate("/sign-in")}>
             Get Started With Flicksy
           </button>
         </div>
