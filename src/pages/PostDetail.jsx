@@ -9,7 +9,7 @@ const PostDetail = () => {
   const [post, setPost] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState("")
-  const [user, setUser] = useState(null) // 👈 added to pass to CommentSection
+  const [user, setUser] = useState(null)
 
   useEffect(() => {
     const fetchPost = async () => {
@@ -38,7 +38,6 @@ const PostDetail = () => {
 
   return post ? (
     <div className="post-detail flex flex-wrap gap-8 p-6">
-      {/* Post details  */}
       <div className="flex-1 min-w-[300px]">
         <div className="border rounded-lg shadow p-4">
           <div className="flex items-center gap-3 mb-4">
@@ -66,7 +65,6 @@ const PostDetail = () => {
         </div>
       </div>
 
-      {/* Comments Section */}
       <div className="w-[350px] min-w-[300px]">
         <CommentSection postId={post._id} user={user} />
       </div>
