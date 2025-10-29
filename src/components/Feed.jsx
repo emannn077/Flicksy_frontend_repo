@@ -1,28 +1,20 @@
 import { useEffect, useState } from "react"
 import axios from "axios"
+import { useNavigate } from "react-router-dom"
+import Client from "../services/api"
 
 const Feed = ({ user }) => {
   const [posts, setPosts] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState("")
+  const navigate = useNavigate()
 
   const fetchPosts = async () => {
     setLoading(true) // start loading
     try {
-      const token = localStorage.getItem("token")
-
-      let url = ""
-      if (user && user._id) {
-        //here the user will see only their post in the profile page
-        url = `http://localhost:3001/post/user/${user._id}`
-      } else {
-        // and here user can view all the users post in homepage
-        url = `http://localhost:3001/post`
-      }
-
-      const res = await axios.get(url, {
-        headers: { Authorization: `Bearer ${token}` },
-      })
+      //so here if user is in profile page can get their post else in homepage all post
+      const url = user && user._id ? `/post/user/${user._id}` : `/post`
+      const res = await Client.get(url)
 
       setPosts(res.data)
       setLoading(false)
@@ -58,6 +50,7 @@ const Feed = ({ user }) => {
           {posts.map((post) => (
             <div
               key={post._id}
+              onClick={() => navigate(`/post/${post._id}`)}
               className="border rounded-lg overflow-hidden shadow"
             >
               <img

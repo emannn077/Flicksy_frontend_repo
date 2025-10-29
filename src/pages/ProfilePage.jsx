@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import axios from "axios"
+import Client, { BASE_URL } from "../services/api"
 import Feed from "../components/Feed"
 
 const ProfilePage = ({ user, setUser }) => {
@@ -21,12 +22,7 @@ const ProfilePage = ({ user, setUser }) => {
         const payload = JSON.parse(atob(token.split(".")[1]))
         const user = payload
 
-        const res = await axios.get(
-          `http://localhost:3001/user/profile/${user._id}`,
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        )
+        const res = await Client.get(`/user/profile/${user._id}`)
 
         setUser(res.data)
       } catch (err) {
@@ -60,7 +56,7 @@ const ProfilePage = ({ user, setUser }) => {
           <img
             src={
               user.profile_picture
-                ? `http://localhost:3001${user.profile_picture}`
+                ? `${BASE_URL}${user.profile_picture}`
                 : "/default-avatar.png"
             }
             alt="Profile"

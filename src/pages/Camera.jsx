@@ -1,6 +1,7 @@
 import React, { useRef, useState } from "react"
 import Webcam from "react-webcam"
 import axios from "axios"
+import Client from "../services/api"
 import { useNavigate, useLocation } from "react-router-dom"
 import { Camera, RefreshCw, Check } from "lucide-react"
 
@@ -60,9 +61,7 @@ const CameraPage = () => {
 
       console.log("📤 Payload:", payload)
 
-      await axios.post(`http://localhost:3001/post/user/${user_id}`, payload, {
-        headers: { Authorization: `Bearer ${token}` },
-      })
+      await Client.post(`/post/user/${user_id}`, payload)
 
       alert(" Post uploaded successfully!")
       navigate("/profile")

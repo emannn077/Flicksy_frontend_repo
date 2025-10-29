@@ -1,14 +1,15 @@
-import { useState } from 'react'
-import axios from 'axios'
-import { useNavigate } from 'react-router-dom'
-import './ChallengeForm.css'
+import { useState } from "react"
+import axios from "axios"
+import Client from "../services/api"
+import { useNavigate } from "react-router-dom"
+import "./ChallengeForm.css"
 
 const ChallengeForm = () => {
   const navigate = useNavigate()
   const [formState, setFormState] = useState({
-    title: '',
-    description: '',
-    points: ''
+    title: "",
+    description: "",
+    points: "",
   })
   const handleChange = (e) => {
     setFormState({ ...formState, [e.target.name]: e.target.value })
@@ -16,13 +17,13 @@ const ChallengeForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    await axios.post('http://localhost:3001/challenge', formState)
+    await Client.post("/challenge", formState)
     setFormState({
-      title: '',
-      description: '',
-      points: ''
+      title: "",
+      description: "",
+      points: "",
     })
-    navigate('/challenges')
+    navigate("/challenges")
   }
 
   return (

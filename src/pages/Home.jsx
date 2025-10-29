@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import axios from "axios"
+import Client from "../services/api"
 import Feed from "../components/Feed"
 
 const HomePage = () => {
@@ -18,7 +19,7 @@ const HomePage = () => {
     const fetchAllPosts = async () => {
       setLoading(true) // start loading
       try {
-        const res = await axios.get("http://localhost:3001/post")
+        const res = await Client.get("/post")
         setPosts(res.data)
         setLoading(false) // ✅ stop loading on success
       } catch (err) {
