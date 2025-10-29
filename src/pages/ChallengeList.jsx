@@ -33,9 +33,9 @@ const ChallengeList = () => {
 
   //here i am adding playChallenge where if user clicks on any challenge it will take it to cameera page
 
-  const playChallenge = () => {
-    if (!randomChallenge) return
-    navigate('/camera', { state: { randomChallenge } })
+  const playChallenge = (challenge) => {
+    if (!challenge) return
+    navigate('/camera', { state: { randomChallenge: challenge } })
   }
   return (
     <div className="challenge-list-container">
@@ -49,10 +49,11 @@ const ChallengeList = () => {
             onClick={() => playChallenge(ch)}
           >
             <div className="challenge-info">
-              <strong className="challenge-title">{ch.title}</strong>
-              <p className="challenge-description">
-                {ch.description} ({ch.points} points)
-              </p>
+              <strong className="challenge-title">
+                {ch.title}
+                <span className="challenge-points">{ch.points} pts</span>
+              </strong>
+              <p className="challenge-description">{ch.description}</p>
             </div>
           </li>
         ))}
@@ -67,9 +68,14 @@ const ChallengeList = () => {
         >
           <h3 className="random-challenge-title">Random Challenge Picked</h3>
           <div className="random-challenge-info">
-            <strong className="challenge-title">{randomChallenge.title}</strong>
+            <strong className="challenge-title">
+              {randomChallenge.title}
+              <span className="challenge-points">
+                {randomChallenge.points} pts
+              </span>
+            </strong>
             <p className="challenge-description">
-              {randomChallenge.description} ({randomChallenge.points} points)
+              {randomChallenge.description}
             </p>
           </div>
         </div>
