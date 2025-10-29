@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
+import './ChallengeForm.css'
 
 const ChallengeForm = () => {
   const navigate = useNavigate()
@@ -25,7 +26,7 @@ const ChallengeForm = () => {
   }
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form className="challenge-form" onSubmit={handleSubmit}>
       <h2>Add a new Challenge</h2>
 
       <label>Title</label>

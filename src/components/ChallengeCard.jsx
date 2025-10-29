@@ -1,19 +1,31 @@
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import './ChallengeCard.css'
 
 const ChallengeCard = () => {
   const navigate = useNavigate()
+  const [active, setActive] = useState('add')
 
-  const handleClick = () => {
-    navigate('/add-challenge')
+  const handleClick = (tab) => {
+    setActive(tab)
+    if (tab === 'add') navigate('/add-challenge')
+    if (tab === 'list') navigate('/challenges')
   }
 
-  const handleChallengeList = () => {
-    navigate('/challenges')
-  }
   return (
-    <div>
-      <button onClick={handleClick}>Add new challenge</button>
-      <button onClick={handleChallengeList}>View all challenges</button>
+    <div className="challenge-card">
+      <button
+        className={`pill ${active === 'add' ? 'is-active' : ''}`}
+        onClick={() => handleClick('add')}
+      >
+        Add new challenge
+      </button>
+      <button
+        className={`pill ${active === 'list' ? 'is-active' : ''}`}
+        onClick={() => handleClick('list')}
+      >
+        View all challenges
+      </button>
     </div>
   )
 }

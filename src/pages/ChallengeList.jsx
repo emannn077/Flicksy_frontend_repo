@@ -1,5 +1,7 @@
-import { useEffect, useState } from "react"
-import axios from "axios"
+import { useEffect, useState } from 'react'
+import axios from 'axios'
+import './ChallengeList.css'
+
 import { useNavigate } from "react-router-dom"
 
 const ChallengeList = () => {
@@ -22,11 +24,6 @@ const ChallengeList = () => {
   useEffect(() => {
     fetchChallenges()
   }, [])
-
-  // const handleDelete = async (_id) => {
-  //   await axios.delete(`http://localhost:3001/challenge/${_id}`)
-  //   setChallenges(challenges.filter((ch) => ch._id !== _id))
-  // }
 
   const pickRandomChallenge = () => {
     if (challenges.length === 0) return
@@ -61,6 +58,13 @@ const ChallengeList = () => {
         ))}
       </ul>
 
+      <button onClick={pickRandomChallenge}>Pick Random Challenge</button>
+
+      {randomChallenge && (
+        <div className="random-challenge">
+          <h3>Random Challenge Picked</h3>
+          <strong>{randomChallenge.title}</strong>:{' '}
+          {randomChallenge.description} ({randomChallenge.points} points)
       <button onClick={pickRandomChallenge} className="random-challenge-btn">
         Pick Random Challenge
       </button>
