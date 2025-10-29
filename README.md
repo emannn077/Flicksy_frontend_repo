@@ -60,6 +60,7 @@ changed your mind about the photo you posted or your comment had a typo? You'd b
 * ability to post photos
 * can take photos via camera
 * can delete photos that been posted
+* points system
 ***
 # Unresolved problems
 * not yet detected
