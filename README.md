@@ -37,11 +37,12 @@ changed your mind about the photo you posted or your comment had a typo? You'd b
 * controllers
 * modules
 * bootstrap
+* react bits
 * MongooseDB
 * insomnia
 * bcrypt
 * express
-*  mongoose
+* mongoose
 * node.js
 * react
 * Model and Controllers
