@@ -17,15 +17,47 @@ const SignUp = () => {
   }
 
   const [formValues, setFormValues] = useState(initialState)
+<<<<<<< HEAD
+  const [selectedImage, setSelectedImage] = useState(null)
+=======
   const [error, setError] = useState("")
+>>>>>>> main
 
   const handleChange = (e) => {
     setFormValues({ ...formValues, [e.target.name]: e.target.value })
   }
 
+  const handleFileChange = (e) => {
+    setSelectedImage(e.target.files)
+    setFormValues({ ...formValues, profile_picture: e.target.files })
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault()
 
+<<<<<<< HEAD
+    const formData = new FormData()
+    formData.append('firstName', formValues.firstName)
+    formData.append('lastName', formValues.lastName)
+    formData.append('username', formValues.username)
+    formData.append('email', formValues.email)
+    formData.append('password', formValues.password)
+    formData.append('profile_picture', selectedImage) // Use selectedImage here
+
+    const response = await axios.post(
+      'http://localhost:3001/auth/sign-up',
+      formData,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      }
+    )
+
+    if (response.status === 200) {
+      setFormValues(initialState)
+      navigate('/sign-in')
+=======
     if (formValues.password !== formValues.confirmPassword) {
       setError("Passwords should match")
       return
@@ -44,6 +76,7 @@ const SignUp = () => {
     } catch (err) {
       console.error("Sign-up error:", err)
       setError("Error creating account. Please try again.")
+>>>>>>> main
     }
   }
 
@@ -135,10 +168,9 @@ const SignUp = () => {
               <label htmlFor="profile_picture">Image:</label>
               <input
                 required
-                type="text"
+                type="file"
                 name="profile_picture"
-                onChange={handleChange}
-                value={formValues.profile_picture}
+                onChange={handleFileChange}
               />
             </div>
             <br />

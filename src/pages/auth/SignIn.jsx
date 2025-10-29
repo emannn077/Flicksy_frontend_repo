@@ -1,12 +1,12 @@
-import { useState } from "react"
-import { useNavigate } from "react-router-dom"
-import DomeGallery from "../../components/DomeGallery"
-import axios from "axios"
-import "/src/App.css"
+import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import DomeGallery from '../../components/DomeGallery'
+import axios from 'axios'
+import '/src/App.css'
 
 const SignIn = ({ setUser }) => {
   const navigate = useNavigate()
-  const [formValues, setFormValues] = useState({ username: "", password: "" })
+  const [formValues, setFormValues] = useState({ username: '', password: '' })
 
   const handleChange = (e) => {
     setFormValues({ ...formValues, [e.target.name]: e.target.value })
@@ -16,22 +16,22 @@ const SignIn = ({ setUser }) => {
     e.preventDefault()
     try {
       const res = await axios.post(
-        "http://localhost:3001/auth/sign-in",
+        'http://localhost:3001/auth/sign-in',
         formValues
       )
 
       if (res.status === 200) {
         const { token, user } = res.data
-        localStorage.setItem("token", token)
-        localStorage.setItem("user_id", user._id)
+        localStorage.setItem('token', token)
+        localStorage.setItem('user_id', user._id)
         setUser(user)
-        setFormValues({ username: "", password: "" })
+        setFormValues({ username: '', password: '' })
         // to go profile page
-        navigate("/profile")
+        navigate('/profile')
       }
     } catch (err) {
-      console.error("Sign-in failed:", err)
-      alert("Invalid credentials or server error.")
+      console.error('Sign-in failed:', err)
+      message('Invalid credentials or server error.')
     }
   }
 

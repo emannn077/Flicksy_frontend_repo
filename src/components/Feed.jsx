@@ -21,9 +21,9 @@ const Feed = ({ user }) => {
       setPosts(res.data)
       setLoading(false)
     } catch (err) {
-      console.error("Failed to fetch posts:", err)
+      console.error('Failed to fetch posts:', err)
       setError(
-        err.response?.data?.message || "An error occurred while fetching posts."
+        err.response?.data?.message || 'An error occurred while fetching posts.'
       )
       setLoading(false)
     }
@@ -59,7 +59,7 @@ const Feed = ({ user }) => {
   return (
     <div className="p-4">
       <h3 className="text-xl font-semibold mb-4">
-        {user ? "Your Posts" : "All Posts"}
+        {user ? 'Your Posts' : 'All Posts'}
       </h3>
 
       {posts.length === 0 ? (

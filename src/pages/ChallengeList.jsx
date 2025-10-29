@@ -34,7 +34,7 @@ const ChallengeList = ({ user }) => {
 
   //here i am adding playChallenge where if user clicks on any challenge it will take it to cameera page
 
-  const playChallenge = () => {
+  const playChallenge = async () => {
     if (!randomChallenge) return
     navigate("/camera", { state: { randomChallenge } })
   }
