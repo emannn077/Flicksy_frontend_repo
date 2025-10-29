@@ -35,15 +35,15 @@ const CameraPage = () => {
 
   // Post photo
   const postPhoto = async () => {
-    setLoading(true) // start loading as soon as function starts
+    setLoading(true)
     try {
       const user_id = localStorage.getItem('user_id')
       const token = localStorage.getItem('token')
 
       if (!user_id || !token) {
-        message('Please log in before posting!')
-        navigate('/signin')
-        setLoading(false) // ✅ stop loading if not logged in
+        alert("Please log in before posting!")
+        navigate("/signin")
+        setLoading(false) //
         return
       }
 
@@ -64,17 +64,17 @@ const CameraPage = () => {
         headers: { Authorization: `Bearer ${token}` }
       })
 
-      message('✅ Post uploaded successfully!')
-      navigate('/profile')
-      setLoading(false) // ✅ stop loading after success
+      alert(" Post uploaded successfully!")
+      navigate("/profile")
+      setLoading(false)
     } catch (err) {
-      console.error('❌ Upload failed:', err)
-      message(
+      console.error("Uploading Failed :", err)
+      alert(
         `Failed to post photo. ${
           err.response?.data?.message || 'Check console for details.'
         }`
       )
-      setLoading(false) // ✅ stop loading even on error
+      setLoading(false)
     }
   }
 
@@ -82,14 +82,12 @@ const CameraPage = () => {
 
   return (
     <div className="w-screen h-screen flex flex-col justify-between items-center bg-black relative overflow-hidden">
-      {/* Challenge overlay */}
-      {mode === 'challenge' && (
+      {mode === "challenge" && (
         <div className="absolute top-5 text-white text-lg font-semibold z-10">
           🎯 Challenge: Capture your moment
         </div>
       )}
 
-      {/* Camera / Preview */}
       <div className="flex-1 flex items-center justify-center">
         {!photo ? (
           <Webcam

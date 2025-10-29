@@ -12,6 +12,7 @@ import DomeGallery from "./components/DomeGallery"
 import ProfilePage from "./pages/ProfilePage"
 import Home from "./pages/Home"
 import "./App.css"
+import UserProfileEdit from "./pages/UserProfileEdit"
 
 const App = () => {
   const [user, setUser] = useState(null)
@@ -53,6 +54,7 @@ const App = () => {
               path="/profile"
               element={<ProfilePage user={user} setUser={setUser} />}
             />
+            <Route path="/edit-profile/:id" element={<UserProfileEdit />} />
             <Route path="/camera" element={<CameraPage />} />
             <Route
               path="/challenges"
