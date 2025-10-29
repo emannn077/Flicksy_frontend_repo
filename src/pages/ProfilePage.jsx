@@ -3,8 +3,8 @@ import { useNavigate } from "react-router-dom"
 import axios from "axios"
 import Feed from "../components/Feed"
 
-const ProfilePage = () => {
-  const [user, setUser] = useState(null)
+const ProfilePage = ({ user }) => {
+  // const [user, setUser] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState("")
   const navigate = useNavigate() // ✅ Add this

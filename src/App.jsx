@@ -14,7 +14,8 @@ import Home from "./pages/Home"
 import "./App.css"
 
 const App = () => {
-  const [User, setUser] = useState(null)
+  const [user, setUser] = useState(null)
+  const [loadingUser, setLoadingUser] = useState(true)
   const navigate = useNavigate()
 
   const handleLogOut = () => {
@@ -34,12 +35,13 @@ const App = () => {
         setUser(null)
       }
     }
+    setLoadingUser(false)
   }, [])
 
   return (
     <>
       <div>
-        <Header user={User} handleLogOut={handleLogOut} />
+        <Header user={user} handleLogOut={handleLogOut} />
         <main>
           <Routes>
             <Route path="/" element={<Welcome />} />
@@ -47,9 +49,15 @@ const App = () => {
             <Route path="/sign-in" element={<SignIn setUser={setUser} />} />
 
             <Route path="/home" element={<Home />} />
-            <Route path="/profile" element={<ProfilePage />} />
+            <Route
+              path="/profile"
+              element={<ProfilePage user={user} setUser={setUser} />}
+            />
             <Route path="/camera" element={<CameraPage />} />
-            <Route path="/challenges" element={<ChallengeList />} />
+            <Route
+              path="/challenges"
+              element={<ChallengeList user={user} setUser={setUser} />}
+            />
             <Route path="/add-challenge" element={<ChallengeForm />} />
             <Route path="/challengeCard" element={<ChallengeCard />} />
           </Routes>

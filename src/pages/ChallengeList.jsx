@@ -1,10 +1,10 @@
-import { useEffect, useState } from 'react'
-import axios from 'axios'
-import './ChallengeList.css'
+import { useEffect, useState } from "react"
+import axios from "axios"
+import "./ChallengeList.css"
 
 import { useNavigate } from "react-router-dom"
 
-const ChallengeList = () => {
+const ChallengeList = ({ user }) => {
   const [challenges, setChallenges] = useState([])
   const [randomChallenge, setRandomChallenge] = useState(null)
   const navigate = useNavigate()
@@ -60,14 +60,14 @@ const ChallengeList = () => {
 
       <button onClick={pickRandomChallenge}>Pick Random Challenge</button>
 
-      {randomChallenge && (
+      {/* {randomChallenge && (
         <div className="random-challenge">
           <h3>Random Challenge Picked</h3>
           <strong>{randomChallenge.title}</strong>:{' '}
           {randomChallenge.description} ({randomChallenge.points} points)
       <button onClick={pickRandomChallenge} className="random-challenge-btn">
         Pick Random Challenge
-      </button>
+      </button> */}
 
       {randomChallenge && (
         <div
