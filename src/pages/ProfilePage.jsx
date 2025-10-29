@@ -3,11 +3,11 @@ import { useNavigate } from "react-router-dom"
 import axios from "axios"
 import Feed from "../components/Feed"
 
-const ProfilePage = ({ user }) => {
+const ProfilePage = ({ user, setUser }) => {
   // const [user, setUser] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState("")
-  const navigate = useNavigate() // ✅ Add this
+  const navigate = useNavigate()
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -22,7 +22,7 @@ const ProfilePage = ({ user }) => {
         const user = payload
 
         const res = await axios.get(
-          `http://localhost:3001/users/profile/${user._id}`,
+          `http://localhost:3001/user/profile/${user._id}`,
           {
             headers: { Authorization: `Bearer ${token}` },
           }
@@ -55,8 +55,14 @@ const ProfilePage = ({ user }) => {
       {user ? (
         <>
           <h2>{user.username}'s Profile</h2>
+
+          {/* to upload profile image we used multer an here below is the edit profile picture */}
           <img
-            src={user.profile_picture || "/default-avatar.png"}
+            src={
+              user.profile_picture
+                ? `http://localhost:3001${user.profile_picture}`
+                : "/default-avatar.png"
+            }
             alt="Profile"
             width="100"
             height="100"
@@ -64,7 +70,6 @@ const ProfilePage = ({ user }) => {
           <p>Email: {user.email}</p>
           <p>Points: {user.points}</p>
 
-          {/* ✅ Add Post Button */}
           <button
             onClick={() => navigate("/camera")}
             style={{
@@ -78,6 +83,23 @@ const ProfilePage = ({ user }) => {
             }}
           >
             + Add Post
+          </button>
+
+          {/* editing the profile page */}
+          <button
+            onClick={() => navigate(`/edit-profile/${user._id}`)}
+            style={{
+              marginTop: "10px",
+              padding: "10px 20px",
+              borderRadius: "8px",
+              border: "none",
+              backgroundColor: "#007bff",
+              color: "white",
+              cursor: "pointer",
+              display: "block",
+            }}
+          >
+            Edit Profile
           </button>
 
           <hr style={{ margin: "20px 0" }} />
