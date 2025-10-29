@@ -1,49 +1,56 @@
 import { useState, useEffect } from "react"
-import { Route, Routes } from "react-router"
+import { Route, Routes, useNavigate } from "react-router"
+import Header from "./components/Header"
 import SignIn from "./pages/auth/SignIn"
 import SignUp from "./pages/auth/SignUp"
-import Home from "./components/Home"
-import Header from "./components/Header"
+import Welcome from "./pages/Welcome"
 import CameraPage from "./pages/Camera"
 import ChallengeCard from "./components/ChallengeCard"
 import ChallengeForm from "./pages/ChallengeForm"
 import ChallengeList from "./pages/ChallengeList"
 import ProfilePage from "./pages/ProfilePage"
+import Home from "./pages/Home"
 import "./App.css"
 
 const App = () => {
-  const [user, setUser] = useState(null)
+  const [User, setUser] = useState(null)
+  const navigate = useNavigate()
 
   const handleLogOut = () => {
     setUser(null)
-    localStorage.clear
+    localStorage.clear()
+    navigate("/")
   }
 
   useEffect(() => {
-    const checkToken = () => {
-      setUser()
-    }
     const token = localStorage.getItem("token")
     if (token) {
-      checkToken()
+      try {
+        const payload = JSON.parse(atob(token.split(".")[1]))
+        setUser(payload)
+      } catch (error) {
+        console.error("Invalid token:", error)
+        setUser(null)
+      }
     }
   }, [])
 
   return (
     <>
       <div>
-        <Header />
+        <Header user={User} handleLogOut={handleLogOut} />
         <main>
           <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/sign-up" element={<SignUp />} />
-            <Route path="/sign-in" element={<SignIn />} />
-            <Route path="/challengeCard" element={<ChallengeCard />} />
-            <Route path="/camera" element={<CameraPage />} />
-            <Route path="/add-challenge" element={<ChallengeForm />} />
-            <Route path="/challenges" element={<ChallengeList />} />
+            <Route path="/" element={<Welcome />} />
+            <Route path="/sign-up" element={<SignUp setUser={setUser} />} />
+            <Route path="/sign-in" element={<SignIn setUser={setUser} />} />
+
+            <Route path="/home" element={<Home />} />
             <Route path="/profile" element={<ProfilePage />} />
-            {/* <Route path={`/user/${user._id}`} element={<Profile />} /> */}
+            <Route path="/camera" element={<CameraPage />} />
+            <Route path="/challenges" element={<ChallengeList />} />
+            <Route path="/add-challenge" element={<ChallengeForm />} />
+            <Route path="/challengeCard" element={<ChallengeCard />} />
           </Routes>
         </main>
       </div>
