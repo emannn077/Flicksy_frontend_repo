@@ -1,9 +1,9 @@
-import Post from "./Post"
+//import Post from "./Post"
 import axios from "axios"
 import { useState } from "react"
 
-const Comment = () => {
-  const [comment, setComment] = useState([])
+const Comment = ({ comment }) => {
+  const [comments, setComments] = useState([])
   const [threadForm, setThreadForm] = useState({
     username: "",
     thread: "",
@@ -28,7 +28,7 @@ const Comment = () => {
           headers: { Authorization: `Bearer ${token}` },
         }
       )
-      setComment([...comment, res.data])
+      setComments([...comments, res.data])
       setThreadForm({ username: "", thread: "" })
     } catch (err) {
       console.error("Failed to post comment:", err)
@@ -50,12 +50,20 @@ const Comment = () => {
           <textarea
             name="thread"
             rows="4"
-            cols="17"
+            cols="12"
             onChange={handleChange}
             value={threadForm.thread}
           ></textarea>
           <button type="submit">Comment</button>
         </form>
+      </div>
+      <div className="comment-list">
+        {comments.map((comment, index) => (
+          <div className="comment-item">
+            <p>{comment.username}</p>
+            <p>{comment.thread}</p>
+          </div>
+        ))}
       </div>
     </>
   )
