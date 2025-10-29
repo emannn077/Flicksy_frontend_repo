@@ -4,7 +4,7 @@ import "./ChallengeList.css"
 
 import { useNavigate } from "react-router-dom"
 
-const ChallengeList = () => {
+const ChallengeList = ({ user }) => {
   const [challenges, setChallenges] = useState([])
   const [randomChallenge, setRandomChallenge] = useState(null)
   const navigate = useNavigate()
