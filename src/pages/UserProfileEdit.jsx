@@ -132,6 +132,7 @@ const UserProfileEdit = () => {
           </p>
         )}
 
+        {/* this is for uploading profile image */}
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="flex flex-col items-center">
             <img
