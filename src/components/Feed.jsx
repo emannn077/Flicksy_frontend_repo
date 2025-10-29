@@ -25,13 +25,13 @@ const Feed = ({ user }) => {
       })
 
       setPosts(res.data)
-      setLoading(false) // ✅ stop loading on success
+      setLoading(false)
     } catch (err) {
       console.error("Failed to fetch posts:", err)
       setError(
         err.response?.data?.message || "An error occurred while fetching posts."
       )
-      setLoading(false) // ✅ stop loading even on error
+      setLoading(false)
     }
   }
 

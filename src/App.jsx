@@ -10,7 +10,10 @@ import ChallengeForm from "./pages/ChallengeForm"
 import ChallengeList from "./pages/ChallengeList"
 import DomeGallery from "./components/DomeGallery"
 import ProfilePage from "./pages/ProfilePage"
+import AddComment from "./components/AddComment"
+import Comment from "./components/Comment"
 import Home from "./pages/Home"
+
 import "./App.css"
 
 const App = () => {
@@ -60,8 +63,9 @@ const App = () => {
             />
             <Route path="/add-challenge" element={<ChallengeForm />} />
             <Route path="/challenges" element={<ChallengeList />} />
-            <Route path="/profile" element={<ProfilePage />} />
+            <Route path="/profile" element={<ProfilePage user={user} />} />
             <Route path="/comment" element={<Comment user={user} />} />
+            <Route path="/comment" element={<AddComment user={user} />} />
 
             <Route path="/challengeCard" element={<ChallengeCard />} />
           </Routes>

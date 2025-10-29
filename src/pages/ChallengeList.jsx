@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react"
 import axios from "axios"
-import "./ChallengeList.css"
+// import "/stylesheet/ChallengeList.css"
 
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from "react-router-dom"
 
 const ChallengeList = ({ user }) => {
   const [challenges, setChallenges] = useState([])
@@ -10,7 +10,7 @@ const ChallengeList = ({ user }) => {
   const navigate = useNavigate()
 
   const fetchChallenges = async () => {
-    const res = await axios.get('http://localhost:3001/challenge')
+    const res = await axios.get("http://localhost:3001/challenge")
 
     const now = new Date()
     const filtered = res.data.filter((ch) => {
@@ -35,7 +35,7 @@ const ChallengeList = ({ user }) => {
 
   const playChallenge = () => {
     if (!randomChallenge) return
-    navigate('/camera', { state: { randomChallenge } })
+    navigate("/camera", { state: { randomChallenge } })
   }
   return (
     <div className="challenge-list-container">
@@ -60,7 +60,6 @@ const ChallengeList = ({ user }) => {
       </ul>
 
       <button onClick={pickRandomChallenge}>Pick Random Challenge</button>
-
 
       {randomChallenge && (
         <div
