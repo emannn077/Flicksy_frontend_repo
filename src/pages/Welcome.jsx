@@ -1,14 +1,14 @@
 import { useNavigate } from "react-router-dom"
-import { NavLink } from "react-router-dom"
-const Home = () => {
+// import { NavLink } from "react-router-dom"
+const Welcome = () => {
   let navigate = useNavigate()
 
   return (
     <>
-      <NavLink />
+      {/* <NavLink /> */}
       <div>
         <div className="signin-homepage">
-          <button onClick={() => navigate("/signin")}>
+          <button onClick={() => navigate("/sign-in")}>
             Get Started With Flicksy
           </button>
         </div>
@@ -17,4 +17,4 @@ const Home = () => {
   )
 }
 
-export default Home
+export default Welcome

@@ -1,42 +1,119 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
+/* Ensure the sphere is always in the back */
+.sphere-root {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -1; /* behind all pages */
+  background-color: #000; /* solid black background */
+}
+
+/* Common float animation */
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+/* Sign-in page */
+.signin-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  position: relative;
+  z-index: 10; /* higher than sphere */
+}
+
+.signin-box {
+  background: rgba(0, 0, 0, 0.6); /* dark for contrast */
+  border-radius: 18px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+  padding: 2.5rem 3rem;
+  width: 360px;
+  max-width: 90%;
+  animation: float 6s ease-in-out infinite;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.signin-box h2 {
   text-align: center;
+  color: #fff;
+  margin-bottom: 1.5rem;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+/* Sign-up page */
+.signup-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  position: relative;
+  z-index: 10; /* same as sign-in */
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.signup-box {
+  background: rgba(0, 0, 0, 0.6); /* dark for contrast */
+  border-radius: 18px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+  padding: 2.5rem 3rem;
+  width: 420px;
+  max-width: 95%;
+  animation: float 6s ease-in-out infinite;
+  border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+.signup-box h2 {
+  text-align: center;
+  color: #fff;
+  margin-bottom: 1.5rem;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
 }
 
-.card {
-  padding: 2em;
+/* Inputs & Buttons */
+.input-class {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
 }
 
-.read-the-docs {
-  color: #888;
+.input-class label {
+  color: #eee;
+  margin-bottom: 0.3rem;
+  font-weight: 500;
+}
+
+.input-class input {
+  padding: 0.6rem;
+  border-radius: 8px;
+  border: none;
+  background: rgba(255, 255, 255, 0.9);
+  font-size: 1rem;
+}
+
+button {
+  width: 100%;
+  padding: 0.7rem;
+  border: none;
+  border-radius: 8px;
+  background-color: rgba(0, 123, 255, 0.8);
+  color: #fff;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+button:hover {
+  background-color: rgba(0, 123, 255, 1);
+  transform: scale(1.03);
 }
