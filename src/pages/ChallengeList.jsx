@@ -1,8 +1,9 @@
-import { useEffect, useState } from 'react'
-import axios from 'axios'
-import './ChallengeList.css'
+import { useEffect, useState } from "react"
+import axios from "axios"
+import Client from "../services/api"
+import "./ChallengeList.css"
 
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from "react-router-dom"
 
 const ChallengeList = ({ user }) => {
   const [challenges, setChallenges] = useState([])
@@ -10,7 +11,7 @@ const ChallengeList = ({ user }) => {
   const navigate = useNavigate()
 
   const fetchChallenges = async () => {
-    const res = await axios.get('http://localhost:3001/challenge')
+    const res = await Client.get("/challenge")
 
     const now = new Date()
     const filtered = res.data.filter((ch) => {
@@ -35,24 +36,7 @@ const ChallengeList = ({ user }) => {
 
   const playChallenge = async () => {
     if (!randomChallenge) return
-
-    try {
-      const token = localStorage.getItem('token')
-      if (!token) throw new Error('no token found')
-
-      const payload = JSON.parse(atob(token.split('.')[1]))
-      const userId = payload._id
-
-      await axios.put(
-        `http://localhost:3001/users/${userId}/addPoints`,
-        { points: randomChallenge.points },
-        { headers: { Authorization: `Bearer ${token}` } }
-      )
-
-      navigate('/camera', { state: { randomChallenge } })
-    } catch (err) {
-      throw err
-    }
+    navigate("/camera", { state: { randomChallenge } })
   }
   return (
     <div className="challenge-list-container">

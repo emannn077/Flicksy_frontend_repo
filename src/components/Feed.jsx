@@ -1,28 +1,22 @@
-import { useEffect, useState } from 'react'
-import axios from 'axios'
+import { useEffect, useState } from "react"
+import axios from "axios"
+import { useNavigate } from "react-router-dom"
+import Client from "../services/api"
 
 const Feed = ({ user }) => {
   const [posts, setPosts] = useState([])
   const [loading, setLoading] = useState(true)
-  const [error, setError] = useState('')
+  const [error, setError] = useState("")
+  const [deleteError, setDeleteError] = useState("")
+
+  const navigate = useNavigate()
 
   const fetchPosts = async () => {
     setLoading(true) // start loading
     try {
-      const token = localStorage.getItem('token')
-
-      let url = ''
-      if (user && user._id) {
-        //here the user will see only their post in the profile page
-        url = `http://localhost:3001/post/user/${user._id}`
-      } else {
-        // and here user can view all the users post in homepage
-        url = `http://localhost:3001/post`
-      }
-
-      const res = await axios.get(url, {
-        headers: { Authorization: `Bearer ${token}` }
-      })
+      //so here if user is in profile page can get their post else in homepage all post
+      const url = user && user._id ? `/post/user/${user._id}` : `/post`
+      const res = await Client.get(url)
 
       setPosts(res.data)
       setLoading(false)
@@ -38,6 +32,23 @@ const Feed = ({ user }) => {
   useEffect(() => {
     fetchPosts()
   }, [user?._id])
+
+  //delete the post
+  const handleDelete = async (postId) => {
+    if (!confirm("Are you sure you want to delete the post?")) return
+    try {
+      await Client.delete(`/post/${postId}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      })
+      setPosts(posts.filter((p) => p._id !== postId))
+      navigate("/home")
+    } catch (err) {
+      console.error("Failed to delete post:", err)
+      setDeleteError("Could not delete post,Please try again.")
+    }
+  }
 
   //here it will show loading when fetching the posts.
   if (loading) return <p>Loading posts...</p>
@@ -58,6 +69,7 @@ const Feed = ({ user }) => {
           {posts.map((post) => (
             <div
               key={post._id}
+              onClick={() => navigate(`/post/${post._id}`)}
               className="border rounded-lg overflow-hidden shadow"
             >
               <img
@@ -67,6 +79,14 @@ const Feed = ({ user }) => {
               />
               <div className="p-2">
                 <p className="text-sm">{post.caption}</p>
+                {user && post.user_id?._id === user._id && (
+                  <button
+                    onClick={() => handleDelete(post._id)}
+                    className="mt-2 px-3 py-1 bg-red-500 text-white text-xs rounded"
+                  >
+                    Delete Post
+                  </button>
+                )}
                 {post.challenge_id && (
                   <p className="text-xs text-gray-600 mt-1">
                     🎯 Challenge: {post.challenge_id.title}
