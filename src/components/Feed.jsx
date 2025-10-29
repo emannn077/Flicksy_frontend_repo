@@ -5,38 +5,49 @@ const Feed = ({ user }) => {
   const [posts, setPosts] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState("")
+
   const fetchPosts = async () => {
+    setLoading(true) // start loading
     try {
       const token = localStorage.getItem("token")
-      const res = await axios.get(
-        `http://localhost:3001/post/user/${user._id}`,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      )
-      console.log(res.data)
+
+      let url = ""
+      if (user && user._id) {
+        // Profile page → user-specific posts
+        url = `http://localhost:3001/post/user/${user._id}`
+      } else {
+        // Home page → all posts
+        url = `http://localhost:3001/post`
+      }
+
+      const res = await axios.get(url, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
 
       setPosts(res.data)
-      console.log(res.data)
+      setLoading(false) // ✅ stop loading on success
     } catch (err) {
       console.error("Failed to fetch posts:", err)
       setError(
         err.response?.data?.message || "An error occurred while fetching posts."
       )
-    } finally {
-      setLoading(false)
+      setLoading(false) // ✅ stop loading even on error
     }
   }
+
   useEffect(() => {
-    if (user._id) fetchPosts()
-  }, [user._id])
+    fetchPosts()
+  }, [user?._id])
 
   if (loading) return <p>Loading posts...</p>
   if (error) return <p style={{ color: "red" }}>{error}</p>
 
   return (
     <div className="p-4">
-      <h3 className="text-xl font-semibold mb-4">Your Posts</h3>
+      <h3 className="text-xl font-semibold mb-4">
+        {user ? "Your Posts" : "All Posts"}
+      </h3>
+
       {posts.length === 0 ? (
         <p>No posts yet.</p>
       ) : (
@@ -56,6 +67,11 @@ const Feed = ({ user }) => {
                 {post.challenge_id && (
                   <p className="text-xs text-gray-600 mt-1">
                     🎯 Challenge: {post.challenge_id.title}
+                  </p>
+                )}
+                {!user && (
+                  <p className="text-xs text-gray-500 mt-1">
+                    👤 {post.user_id?.username}
                   </p>
                 )}
               </div>

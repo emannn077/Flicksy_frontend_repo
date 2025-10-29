@@ -35,15 +35,15 @@ const CameraPage = () => {
 
   // Post photo
   const postPhoto = async () => {
+    setLoading(true) // start loading as soon as function starts
     try {
-      setLoading(true)
-
       const user_id = localStorage.getItem("user_id")
       const token = localStorage.getItem("token")
 
       if (!user_id || !token) {
         alert("Please log in before posting!")
         navigate("/signin")
+        setLoading(false) // ✅ stop loading if not logged in
         return
       }
 
@@ -66,6 +66,7 @@ const CameraPage = () => {
 
       alert("✅ Post uploaded successfully!")
       navigate("/profile")
+      setLoading(false) // ✅ stop loading after success
     } catch (err) {
       console.error("❌ Upload failed:", err)
       alert(
@@ -73,8 +74,7 @@ const CameraPage = () => {
           err.response?.data?.message || "Check console for details."
         }`
       )
-    } finally {
-      setLoading(false)
+      setLoading(false) // ✅ stop loading even on error
     }
   }
 
