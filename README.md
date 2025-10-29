@@ -1,4 +1,4 @@
-![HomePage]()
+
 # Flicksy
 ## Date: 23/10/2025
 

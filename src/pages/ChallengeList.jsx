@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react"
-import axios from "axios"
-import "./ChallengeList.css"
+import { useEffect, useState } from 'react'
+import axios from 'axios'
+import './ChallengeList.css'
 
 import { useNavigate } from 'react-router-dom'
 
@@ -33,9 +33,26 @@ const ChallengeList = ({ user }) => {
 
   //here i am adding playChallenge where if user clicks on any challenge it will take it to cameera page
 
-  const playChallenge = () => {
+  const playChallenge = async () => {
     if (!randomChallenge) return
-    navigate('/camera', { state: { randomChallenge } })
+
+    try {
+      const token = localStorage.getItem('token')
+      if (!token) throw new Error('no token found')
+
+      const payload = JSON.parse(atob(token.split('.')[1]))
+      const userId = payload._id
+
+      await axios.put(
+        `http://localhost:3001/users/${userId}/addPoints`,
+        { points: randomChallenge.points },
+        { headers: { Authorization: `Bearer ${token}` } }
+      )
+
+      navigate('/camera', { state: { randomChallenge } })
+    } catch (err) {
+      throw err
+    }
   }
   return (
     <div className="challenge-list-container">
@@ -60,7 +77,6 @@ const ChallengeList = ({ user }) => {
       </ul>
 
       <button onClick={pickRandomChallenge}>Pick Random Challenge</button>
-
 
       {randomChallenge && (
         <div

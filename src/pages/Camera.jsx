@@ -1,22 +1,22 @@
-import React, { useRef, useState } from "react"
-import Webcam from "react-webcam"
-import axios from "axios"
-import { useNavigate, useLocation } from "react-router-dom"
-import { Camera, RefreshCw, Check } from "lucide-react"
+import React, { useRef, useState } from 'react'
+import Webcam from 'react-webcam'
+import axios from 'axios'
+import { useNavigate, useLocation } from 'react-router-dom'
+import { Camera, RefreshCw, Check } from 'lucide-react'
 
 const CameraPage = () => {
   const webcamRef = useRef(null)
   const [photo, setPhoto] = useState(null)
-  const [caption, setCaption] = useState("") // user caption
-  const [facingMode, setFacingMode] = useState("user")
+  const [caption, setCaption] = useState('') // user caption
+  const [facingMode, setFacingMode] = useState('user')
   const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
   const location = useLocation()
 
   // Detect mode and optional challenge_id from URL
   const queryParams = new URLSearchParams(location.search)
-  const mode = queryParams.get("mode") || "normal"
-  const challenge_id = queryParams.get("challenge_id") || null
+  const mode = queryParams.get('mode') || 'normal'
+  const challenge_id = queryParams.get('challenge_id') || null
 
   // Capture photo
   const capture = () => {
@@ -26,52 +26,52 @@ const CameraPage = () => {
 
   const retake = () => {
     setPhoto(null)
-    setCaption("")
+    setCaption('')
   }
 
   const switchCamera = () => {
-    setFacingMode((prev) => (prev === "user" ? "environment" : "user"))
+    setFacingMode((prev) => (prev === 'user' ? 'environment' : 'user'))
   }
 
   // Post photo
   const postPhoto = async () => {
     setLoading(true) // start loading as soon as function starts
     try {
-      const user_id = localStorage.getItem("user_id")
-      const token = localStorage.getItem("token")
+      const user_id = localStorage.getItem('user_id')
+      const token = localStorage.getItem('token')
 
       if (!user_id || !token) {
-        alert("Please log in before posting!")
-        navigate("/signin")
+        message('Please log in before posting!')
+        navigate('/signin')
         setLoading(false) // ✅ stop loading if not logged in
         return
       }
 
       const payload = {
         user_id,
-        challenge_id: mode === "challenge" ? challenge_id : null,
+        challenge_id: mode === 'challenge' ? challenge_id : null,
         image: photo,
         caption:
           caption ||
-          (mode === "challenge"
-            ? "Challenge completed!"
-            : "Just sharing my day!"),
+          (mode === 'challenge'
+            ? 'Challenge completed!'
+            : 'Just sharing my day!')
       }
 
-      console.log("📤 Payload:", payload)
+      console.log('📤 Payload:', payload)
 
       await axios.post(`http://localhost:3001/post/user/${user_id}`, payload, {
-        headers: { Authorization: `Bearer ${token}` },
+        headers: { Authorization: `Bearer ${token}` }
       })
 
-      alert("✅ Post uploaded successfully!")
-      navigate("/profile")
+      message('✅ Post uploaded successfully!')
+      navigate('/profile')
       setLoading(false) // ✅ stop loading after success
     } catch (err) {
-      console.error("❌ Upload failed:", err)
-      alert(
+      console.error('❌ Upload failed:', err)
+      message(
         `Failed to post photo. ${
-          err.response?.data?.message || "Check console for details."
+          err.response?.data?.message || 'Check console for details.'
         }`
       )
       setLoading(false) // ✅ stop loading even on error
@@ -83,7 +83,7 @@ const CameraPage = () => {
   return (
     <div className="w-screen h-screen flex flex-col justify-between items-center bg-black relative overflow-hidden">
       {/* Challenge overlay */}
-      {mode === "challenge" && (
+      {mode === 'challenge' && (
         <div className="absolute top-5 text-white text-lg font-semibold z-10">
           🎯 Challenge: Capture your moment
         </div>
@@ -97,7 +97,7 @@ const CameraPage = () => {
             audio={false}
             screenshotFormat="image/jpeg"
             videoConstraints={videoConstraints}
-            mirrored={facingMode === "user"}
+            mirrored={facingMode === 'user'}
             className="w-full h-full object-cover"
           />
         ) : (
@@ -154,7 +154,7 @@ const CameraPage = () => {
               onClick={postPhoto}
               disabled={loading}
               className={`${
-                loading ? "bg-gray-400" : "bg-green-500"
+                loading ? 'bg-gray-400' : 'bg-green-500'
               } w-16 h-16 rounded-full flex items-center justify-center shadow-lg`}
             >
               <Check className="text-white" size={32} />
