@@ -39,7 +39,7 @@ const ChallengeList = () => {
   }
   return (
     <div className="challenge-list-container">
-      <h2 className="challenge-list-title">All Challenges (Last Hour)</h2>
+      <h2 className="challenge-list-title">All Challenges (Last 24 Hour)</h2>
 
       <ul className="challenge-list">
         {challenges.map((ch) => (
