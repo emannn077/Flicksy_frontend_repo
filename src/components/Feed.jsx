@@ -1,17 +1,17 @@
-import { useEffect, useState } from "react"
-import axios from "axios"
+import { useEffect, useState } from 'react'
+import axios from 'axios'
 
 const Feed = ({ user }) => {
   const [posts, setPosts] = useState([])
   const [loading, setLoading] = useState(true)
-  const [error, setError] = useState("")
+  const [error, setError] = useState('')
 
   const fetchPosts = async () => {
     setLoading(true) // start loading
     try {
-      const token = localStorage.getItem("token")
+      const token = localStorage.getItem('token')
 
-      let url = ""
+      let url = ''
       if (user && user._id) {
         // Profile page → user-specific posts
         url = `http://localhost:3001/post/user/${user._id}`
@@ -21,15 +21,15 @@ const Feed = ({ user }) => {
       }
 
       const res = await axios.get(url, {
-        headers: { Authorization: `Bearer ${token}` },
+        headers: { Authorization: `Bearer ${token}` }
       })
 
       setPosts(res.data)
       setLoading(false) // ✅ stop loading on success
     } catch (err) {
-      console.error("Failed to fetch posts:", err)
+      console.error('Failed to fetch posts:', err)
       setError(
-        err.response?.data?.message || "An error occurred while fetching posts."
+        err.response?.data?.message || 'An error occurred while fetching posts.'
       )
       setLoading(false) // ✅ stop loading even on error
     }
@@ -40,12 +40,12 @@ const Feed = ({ user }) => {
   }, [user?._id])
 
   if (loading) return <p>Loading posts...</p>
-  if (error) return <p style={{ color: "red" }}>{error}</p>
+  if (error) return <p style={{ color: 'red' }}>{error}</p>
 
   return (
     <div className="p-4">
       <h3 className="text-xl font-semibold mb-4">
-        {user ? "Your Posts" : "All Posts"}
+        {user ? 'Your Posts' : 'All Posts'}
       </h3>
 
       {posts.length === 0 ? (
