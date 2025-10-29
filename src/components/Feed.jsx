@@ -13,10 +13,10 @@ const Feed = ({ user }) => {
 
       let url = ""
       if (user && user._id) {
-        // Profile page → user-specific posts
+        //here the user will see only their post in the profile page
         url = `http://localhost:3001/post/user/${user._id}`
       } else {
-        // Home page → all posts
+        // and here user can view all the users post in homepage
         url = `http://localhost:3001/post`
       }
 
@@ -25,13 +25,13 @@ const Feed = ({ user }) => {
       })
 
       setPosts(res.data)
-      setLoading(false) // ✅ stop loading on success
+      setLoading(false)
     } catch (err) {
       console.error("Failed to fetch posts:", err)
       setError(
         err.response?.data?.message || "An error occurred while fetching posts."
       )
-      setLoading(false) // ✅ stop loading even on error
+      setLoading(false)
     }
   }
 
@@ -39,7 +39,10 @@ const Feed = ({ user }) => {
     fetchPosts()
   }, [user?._id])
 
+  //here it will show loading when fetching the posts.
   if (loading) return <p>Loading posts...</p>
+
+  //here it will show error if the posts arent fetched
   if (error) return <p style={{ color: "red" }}>{error}</p>
 
   return (

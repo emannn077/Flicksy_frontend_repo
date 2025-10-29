@@ -21,6 +21,10 @@ const Comment = ({ user }) => {
         alert("You must be logged in to comment!")
         return
       }
+      const payload = {
+        user,
+        post,
+      }
       const res = await axios.post(
         "http://localhost:3001/comment",
         { ...threadForm, owner: user._id },
