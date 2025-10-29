@@ -2,7 +2,7 @@
 import axios from "axios"
 import { useState } from "react"
 
-const Comment = ({ comment }) => {
+const Comment = ({ user }) => {
   const [comments, setComments] = useState([])
   const [threadForm, setThreadForm] = useState({
     username: "",
@@ -23,11 +23,13 @@ const Comment = ({ comment }) => {
       }
       const res = await axios.post(
         "http://localhost:3001/comment",
-        threadForm,
+        { ...threadForm, owner: user._id },
         {
-          headers: { Authorization: `Bearer ${token}` },
+          headers: { authorization: `Bearer ${token}` },
         }
       )
+      console.log(res.data)
+
       setComments([...comments, res.data])
       setThreadForm({ username: "", thread: "" })
     } catch (err) {
@@ -58,7 +60,7 @@ const Comment = ({ comment }) => {
         </form>
       </div>
       <div className="comment-list">
-        {comments.map((comment, index) => (
+        {comments.map((comment) => (
           <div className="comment-item">
             <p>{comment.username}</p>
             <p>{comment.thread}</p>

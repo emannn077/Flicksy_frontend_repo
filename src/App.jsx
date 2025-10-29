@@ -45,7 +45,7 @@ const App = () => {
             <Route path="/add-challenge" element={<ChallengeForm />} />
             <Route path="/challenges" element={<ChallengeList />} />
             <Route path="/profile" element={<ProfilePage />} />
-            <Route path="/comment" element={<Comment />} />
+            <Route path="/comment" element={<Comment user={user} />} />
 
             {/* <Route path={`/user/${user._id}`} element={<Profile />} /> */}
           </Routes>
