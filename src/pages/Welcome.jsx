@@ -5,11 +5,10 @@ const Welcome = () => {
 
   return (
     <>
-      {/* <NavLink /> */}
       <div>
         <div className="signin-homepage">
           <button onClick={() => navigate("/sign-in")}>
-            Get Started With Flicksy
+            Get Started With Flicksy App
           </button>
         </div>
       </div>

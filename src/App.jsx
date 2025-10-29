@@ -63,7 +63,6 @@ const App = () => {
             <Route path="/profile" element={<ProfilePage />} />
             <Route path="/comment" element={<Comment user={user} />} />
 
-            {/* <Route path={`/user/${user._id}`} element={<Profile />} /> */}
             <Route path="/challengeCard" element={<ChallengeCard />} />
           </Routes>
         </main>
