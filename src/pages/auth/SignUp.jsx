@@ -1,22 +1,27 @@
-import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import DomeGallery from '../../components/DomeGallery'
-import axios from 'axios'
-import '/src/App.css'
+import { useState } from "react"
+import { useNavigate } from "react-router-dom"
+import DomeGallery from "../../components/DomeGallery"
+import axios from "axios"
+import "/src/App.css"
 
 const SignUp = () => {
   let navigate = useNavigate()
   const initialState = {
-    firstName: '',
-    lastName: '',
-    username: '',
-    email: '',
-    password: '',
-    profile_picture: ''
+    firstName: "",
+    lastName: "",
+    username: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+    profile_picture: "",
   }
 
   const [formValues, setFormValues] = useState(initialState)
+<<<<<<< HEAD
   const [selectedImage, setSelectedImage] = useState(null)
+=======
+  const [error, setError] = useState("")
+>>>>>>> main
 
   const handleChange = (e) => {
     setFormValues({ ...formValues, [e.target.name]: e.target.value })
@@ -30,6 +35,7 @@ const SignUp = () => {
   const handleSubmit = async (e) => {
     e.preventDefault()
 
+<<<<<<< HEAD
     const formData = new FormData()
     formData.append('firstName', formValues.firstName)
     formData.append('lastName', formValues.lastName)
@@ -51,6 +57,26 @@ const SignUp = () => {
     if (response.status === 200) {
       setFormValues(initialState)
       navigate('/sign-in')
+=======
+    if (formValues.password !== formValues.confirmPassword) {
+      setError("Passwords should match")
+      return
+    }
+
+    try {
+      const response = await axios.post(
+        "http://localhost:3001/auth/sign-up",
+        formValues
+      )
+
+      if (response.status === 200) {
+        setFormValues(initialState)
+        navigate("/sign-in")
+      }
+    } catch (err) {
+      console.error("Sign-up error:", err)
+      setError("Error creating account. Please try again.")
+>>>>>>> main
     }
   }
 
@@ -114,6 +140,30 @@ const SignUp = () => {
                 autoComplete="email"
               />
             </div>
+
+            <div className="input-class">
+              <label htmlFor="password">Your Password :</label>
+              <input
+                type="password"
+                name="password"
+                placeholder="Password"
+                onChange={handleChange}
+                value={formValues.password}
+                required
+                autoComplete="off"
+              />
+            </div>
+            <div className="input-class">
+              <label>Confirm Password :</label>
+              <input
+                type="password"
+                name="confirmPassword"
+                placeholder="Confirm Password"
+                value={formValues.confirmPassword}
+                onChange={handleChange}
+                required
+              />
+            </div>
             <div>
               <label htmlFor="profile_picture">Image:</label>
               <input
@@ -123,20 +173,7 @@ const SignUp = () => {
                 onChange={handleFileChange}
               />
             </div>
-
-            <div className="input-class">
-              <label htmlFor="password">Your Password :</label>
-              <input
-                type="password"
-                name="password"
-                placeholder="password"
-                onChange={handleChange}
-                value={formValues.password}
-                required
-                autoComplete="off"
-              />
-            </div>
-
+            <br />
             <button
               disabled={
                 !formValues.email ||

@@ -4,7 +4,7 @@ import DomeGallery from "../../components/DomeGallery"
 import axios from "axios"
 import "/src/App.css"
 
-const SignIn = () => {
+const SignIn = ({ setUser }) => {
   const navigate = useNavigate()
   const [formValues, setFormValues] = useState({ username: "", password: "" })
 
@@ -21,21 +21,16 @@ const SignIn = () => {
       )
 
       if (res.status === 200) {
-        // ✅ Assuming backend returns token + user object
         const { token, user } = res.data
-
-        // Save in localStorage
         localStorage.setItem("token", token)
         localStorage.setItem("user_id", user._id)
-
-        // Reset form
+        setUser(user)
         setFormValues({ username: "", password: "" })
-
-        // ✅ Redirect to profile page
+        // to go profile page
         navigate("/profile")
       }
     } catch (err) {
-      console.error("❌ Sign-in failed:", err)
+      console.error("Sign-in failed:", err)
       alert("Invalid credentials or server error.")
     }
   }
