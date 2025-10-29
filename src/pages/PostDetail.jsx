@@ -1,15 +1,17 @@
 import { useEffect, useState } from "react"
-import { useParams, Link } from "react-router-dom"
+import { useParams, Link, useNavigate } from "react-router-dom"
 import axios from "axios"
 import Client from "../services/api"
 import CommentSection from "../components/CommentSection"
 
 const PostDetail = () => {
   const { id } = useParams()
+  const navigate = useNavigate()
   const [post, setPost] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState("")
   const [user, setUser] = useState(null)
+  const [deleteError, setDeleteError] = useState("")
 
   useEffect(() => {
     const fetchPost = async () => {

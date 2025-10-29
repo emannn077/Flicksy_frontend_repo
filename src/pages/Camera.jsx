@@ -11,6 +11,7 @@ const CameraPage = () => {
   const [caption, setCaption] = useState("") // user caption
   const [facingMode, setFacingMode] = useState("user")
   const [loading, setLoading] = useState(false)
+  const [message, setMessage] = useState("")
   const navigate = useNavigate()
   const location = useLocation()
 
@@ -42,33 +43,35 @@ const CameraPage = () => {
       const token = localStorage.getItem("token")
 
       if (!user_id || !token) {
-        alert("Please log in before posting!")
+        setMessage("Please log in before posting!")
         navigate("/signin")
-        setLoading(false) //
+        setLoading(false)
         return
       }
+      const challenge = location.state?.randomChallenge || null
+      const finalCaption =
+        caption ||
+        (mode === "challenge" && challenge
+          ? `Challenge: ${challenge.title} done !`
+          : "Sharing a Moment !")
 
       const payload = {
         user_id,
-        challenge_id: mode === "challenge" ? challenge_id : null,
+        challenge_id: challenge?._id || null,
         image: photo,
-        caption:
-          caption ||
-          (mode === "challenge"
-            ? "Challenge completed!"
-            : "Just sharing my day!"),
+        caption: finalCaption,
       }
 
-      console.log("📤 Payload:", payload)
+      console.log("Payload:", payload)
 
       await Client.post(`/post/user/${user_id}`, payload)
 
-      alert(" Post uploaded successfully!")
-      navigate("/profile")
+      setMessage(" Post uploaded successfully!")
+      setTimeout(() => navigate("/profile"), 1500)
       setLoading(false)
     } catch (err) {
       console.error("Uploading Failed :", err)
-      alert(
+      setMessage(
         `Failed to post photo. ${
           err.response?.data?.message || "Check console for details."
         }`
@@ -106,7 +109,6 @@ const CameraPage = () => {
         )}
       </div>
 
-      {/* Caption input */}
       {photo && (
         <div className="absolute bottom-32 w-full px-6 z-20">
           <input

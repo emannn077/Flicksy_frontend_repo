@@ -22,7 +22,7 @@ const ProfilePage = ({ user, setUser }) => {
         const payload = JSON.parse(atob(token.split(".")[1]))
         const user = payload
 
-        const res = await Client.get(`/user/profile/${user._id}`)
+        const res = await Client.get(`/users/profile/${user._id}`)
 
         setUser(res.data)
       } catch (err) {
