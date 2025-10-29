@@ -1,0 +1,158 @@
+.challenge-list-container {
+  max-width: 800px;
+  margin: 60px auto;
+  padding: 2rem;
+  background: linear-gradient(135deg, #1e1f29, #2a2b38);
+  border-radius: 18px;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.35);
+  color: #f1f1f1;
+  font-family: 'Inter', 'Poppins', sans-serif;
+  text-align: center;
+  animation: fadeIn 0.6s ease;
+}
+
+.challenge-list-title {
+  font-size: 1.9rem;
+  margin-bottom: 1.8rem;
+  color: #fff;
+  letter-spacing: 1px;
+  border-bottom: 2px solid #7c3aed;
+  display: inline-block;
+  padding-bottom: 6px;
+}
+
+/* Challenge list styling */
+.challenge-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 2rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.challenge-item {
+  background: #2f3141;
+  padding: 1rem 1.2rem;
+  border-radius: 12px;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.25s ease;
+  border: 1px solid transparent;
+  position: relative; /* Added so we can position points */
+}
+
+.challenge-item:hover {
+  background: #3b3d52;
+  border-color: #8b5cf6;
+  transform: translateY(-3px);
+  box-shadow: 0 0 10px rgba(139, 92, 246, 0.4);
+}
+
+.challenge-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.challenge-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 0.4rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.challenge-points {
+  background: linear-gradient(135deg, #ff7b00, #ffb347);
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.9rem;
+  padding: 0.3rem 0.7rem;
+  border-radius: 8px;
+  margin-left: 10px;
+  min-width: 60px;
+  text-align: center;
+  box-shadow: 0 0 10px rgba(255, 140, 0, 0.5);
+}
+
+.challenge-description {
+  font-size: 1rem; /* slightly bigger */
+  color: #f0f0f5; /* brighter */
+  font-weight: 500; /* a bit bolder */
+  text-shadow: 0 0 4px rgba(255, 255, 255, 0.2); /* subtle glow */
+  margin-top: 0.2rem;
+}
+
+/* Random challenge box */
+.random-challenge-box {
+  margin-top: 2rem;
+  padding: 1.5rem;
+  background: linear-gradient(135deg, #7c3aed, #8b5cf6);
+  border-radius: 14px;
+  color: #fff;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  animation: popIn 0.6s ease;
+}
+
+.random-challenge-box:hover {
+  transform: scale(1.03);
+  box-shadow: 0 0 20px rgba(139, 92, 246, 0.6);
+}
+
+.random-challenge-title {
+  font-size: 1.4rem;
+  margin-bottom: 1rem;
+  font-weight: 700;
+}
+
+.random-challenge-info {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  padding: 1rem;
+}
+
+/* Button styling */
+.challenge-list-container button {
+  background: linear-gradient(135deg, #7c3aed, #8b5cf6);
+  border: none;
+  color: #fff;
+  font-weight: 600;
+  padding: 0.8rem 1.6rem;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 1rem;
+  letter-spacing: 0.5px;
+  transition: all 0.25s ease;
+}
+
+.challenge-list-container button:hover {
+  background: linear-gradient(135deg, #8b5cf6, #a78bfa);
+  transform: scale(1.05);
+  box-shadow: 0 0 12px rgba(139, 92, 246, 0.6);
+}
+
+/* Subtle animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes popIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}

@@ -1,9 +1,13 @@
-import { useEffect, useState } from 'react'
-import axios from 'axios'
+import { useEffect, useState } from "react"
+import axios from "axios"
+import "./ChallengeList.css"
 
-const ChallengeList = () => {
+import { useNavigate } from 'react-router-dom'
+
+const ChallengeList = ({ user }) => {
   const [challenges, setChallenges] = useState([])
   const [randomChallenge, setRandomChallenge] = useState(null)
+  const navigate = useNavigate()
 
   const fetchChallenges = async () => {
     const res = await axios.get('http://localhost:3001/challenge')
@@ -12,7 +16,7 @@ const ChallengeList = () => {
     const filtered = res.data.filter((ch) => {
       const created = new Date(ch.createdAt)
       const hoursDiff = (now - created) / (1000 * 60 * 60)
-      return hoursDiff < 1
+      return hoursDiff < 24
     })
     setChallenges(filtered)
   }
@@ -21,34 +25,60 @@ const ChallengeList = () => {
     fetchChallenges()
   }, [])
 
-  // const handleDelete = async (_id) => {
-  //   await axios.delete(`http://localhost:3001/challenge/${_id}`)
-  //   setChallenges(challenges.filter((ch) => ch._id !== _id))
-  // }
-
   const pickRandomChallenge = () => {
     if (challenges.length === 0) return
     const randomIndex = Math.floor(Math.random() * challenges.length)
     setRandomChallenge(challenges[randomIndex])
   }
-  return (
-    <div>
-      <h2>All Challenges</h2>
 
-      <ul>
+  //here i am adding playChallenge where if user clicks on any challenge it will take it to cameera page
+
+  const playChallenge = () => {
+    if (!randomChallenge) return
+    navigate('/camera', { state: { randomChallenge } })
+  }
+  return (
+    <div className="challenge-list-container">
+      <h2 className="challenge-list-title">All Challenges (Last 24 Hour)</h2>
+
+      <ul className="challenge-list">
         {challenges.map((ch) => (
-          <li key={ch._id}>
-            <strong>{ch.title}</strong> - {ch.description} ({ch.points} points)
-            {/* <button onClick={() => handleDelete(ch._id)}>Delete</button> */}
+          <li
+            key={ch._id}
+            className="challenge-item"
+            onClick={() => playChallenge(ch)}
+          >
+            <div className="challenge-info">
+              <strong className="challenge-title">
+                {ch.title}
+                <span className="challenge-points">{ch.points} pts</span>
+              </strong>
+              <p className="challenge-description">{ch.description}</p>
+            </div>
           </li>
         ))}
       </ul>
-      <button onClick={pickRandomChallenge}>pick random challenge</button>
+
+      <button onClick={pickRandomChallenge}>Pick Random Challenge</button>
+
+
       {randomChallenge && (
-        <div>
-          <h3>Random challenge picked</h3>
-          <strong>{randomChallenge.title}</strong>:{randomChallenge.description}{' '}
-          ({randomChallenge.points} points)
+        <div
+          className="random-challenge-box"
+          onClick={() => playChallenge(randomChallenge)}
+        >
+          <h3 className="random-challenge-title">Random Challenge Picked</h3>
+          <div className="random-challenge-info">
+            <strong className="challenge-title">
+              {randomChallenge.title}
+              <span className="challenge-points">
+                {randomChallenge.points} pts
+              </span>
+            </strong>
+            <p className="challenge-description">
+              {randomChallenge.description}
+            </p>
+          </div>
         </div>
       )}
     </div>
