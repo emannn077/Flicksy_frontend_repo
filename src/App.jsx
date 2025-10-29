@@ -1,17 +1,17 @@
-import { useState, useEffect } from "react"
-import { Route, Routes, useNavigate } from "react-router"
-import Header from "./components/Header"
-import SignIn from "./pages/auth/SignIn"
-import SignUp from "./pages/auth/SignUp"
-import Welcome from "./pages/Welcome"
-import CameraPage from "./pages/Camera"
-import ChallengeCard from "./components/ChallengeCard"
-import ChallengeForm from "./pages/ChallengeForm"
-import ChallengeList from "./pages/ChallengeList"
-import DomeGallery from "./components/DomeGallery"
-import ProfilePage from "./pages/ProfilePage"
-import Home from "./pages/Home"
-import "./App.css"
+import { useState, useEffect } from 'react'
+import { Route, Routes, useNavigate } from 'react-router'
+import Header from './components/Header'
+import SignIn from './pages/auth/SignIn'
+import SignUp from './pages/auth/SignUp'
+import Welcome from './pages/Welcome'
+import CameraPage from './pages/Camera'
+import ChallengeCard from './components/ChallengeCard'
+import ChallengeForm from './pages/ChallengeForm'
+import ChallengeList from './pages/ChallengeList'
+import DomeGallery from './components/DomeGallery'
+import ProfilePage from './pages/ProfilePage'
+import Home from './pages/Home'
+import './App.css'
 
 const App = () => {
   const [user, setUser] = useState(null)
@@ -21,17 +21,17 @@ const App = () => {
   const handleLogOut = () => {
     setUser(null)
     localStorage.clear()
-    navigate("/")
+    navigate('/')
   }
 
   useEffect(() => {
-    const token = localStorage.getItem("token")
+    const token = localStorage.getItem('token')
     if (token) {
       try {
-        const payload = JSON.parse(atob(token.split(".")[1]))
+        const payload = JSON.parse(atob(token.split('.')[1]))
         setUser(payload)
       } catch (error) {
-        console.error("Invalid token:", error)
+        console.error('Invalid token:', error)
         setUser(null)
       }
     }
