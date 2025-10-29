@@ -1,6 +1,6 @@
-import React from "react"
+import React, { useState } from "react"
 import "/public/stylesheet/style.css"
-
+import axios from "axios"
 const Post = ({ post }) => {
   return (
     <div className="post">

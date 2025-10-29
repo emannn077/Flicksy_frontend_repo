@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import axios from "axios"
+import Client from "../services/api"
 import Feed from "../components/Feed"
 
 const HomePage = () => {
@@ -16,15 +17,15 @@ const HomePage = () => {
       return
     }
     const fetchAllPosts = async () => {
-      setLoading(true) // start loading
+      setLoading(true)
       try {
-        const res = await axios.get("http://localhost:3001/post")
+        const res = await Client.get("/post")
         setPosts(res.data)
-        setLoading(false) // ✅ stop loading on success
+        setLoading(false)
       } catch (err) {
         console.error("Error fetching posts:", err)
         setError("Failed to load posts.")
-        setLoading(false) // ✅ stop loading on error
+        setLoading(false)
       }
     }
 
@@ -37,7 +38,7 @@ const HomePage = () => {
   return (
     <div style={{ padding: "20px" }}>
       <h2>All Users’ Posts</h2>
-      <Feed posts={posts} /> {/* 👈 Pass posts directly to Feed */}
+      <Feed posts={posts} />
     </div>
   )
 }

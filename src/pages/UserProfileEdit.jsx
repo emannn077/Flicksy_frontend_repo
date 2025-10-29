@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react"
+import { BASE_URL } from "../services/api"
 import axios from "axios"
+import Client from "../services/api"
 import { useParams, useNavigate } from "react-router-dom"
 
 const UserProfileEdit = () => {
@@ -29,15 +31,10 @@ const UserProfileEdit = () => {
     const fetchUser = async () => {
       try {
         const token = localStorage.getItem("token")
-        const res = await axios.get(
-          `http://localhost:3001/user/profile/${id}`,
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        )
+        const res = await Client.get(`/user/profile/${id}`)
         setFormData(res.data)
         if (res.data.profile_picture) {
-          setPreview(`http://localhost:3001${res.data.profile_picture}`)
+          setPreview(`${BASE_URL}${res.data.profile_picture}`)
         }
       } catch (err) {
         console.error("Failed to load user:", err)
@@ -88,22 +85,17 @@ const UserProfileEdit = () => {
       if (file) data.append("profile_picture", file)
       if (passwordData.password) data.append("password", passwordData.password)
 
-      const res = await axios.put(
-        `http://localhost:3001/user/profile/${id}`,
-        data,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      )
+      const res = await Client.put(`/user/profile/${id}`, data, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      })
 
       setFormData(res.data.user)
       setMessage(res.data.msg || "Profile updated successfully!")
 
       if (res.data.user.profile_picture) {
-        setPreview(`http://localhost:3001${res.data.user.profile_picture}`)
+        setPreview(`${BASE_URL}${res.data.user.profile_picture}`)
       }
 
       setPasswordData({ password: "", confirmPassword: "" })

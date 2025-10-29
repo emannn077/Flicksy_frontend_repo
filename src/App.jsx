@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react"
-import { Route, Routes, useNavigate } from "react-router"
+import { Route, Routes, useNavigate, Navigate } from "react-router-dom"
 import Header from "./components/Header"
 import SignIn from "./pages/auth/SignIn"
 import SignUp from "./pages/auth/SignUp"
@@ -11,6 +11,7 @@ import ChallengeList from "./pages/ChallengeList"
 import DomeGallery from "./components/DomeGallery"
 import ProfilePage from "./pages/ProfilePage"
 import Home from "./pages/Home"
+import PostDetail from "./pages/PostDetail"
 import "./App.css"
 import UserProfileEdit from "./pages/UserProfileEdit"
 
@@ -44,29 +45,32 @@ const App = () => {
       <div>
         <Header user={user} handleLogOut={handleLogOut} />
         <main>
-          <Routes>
-            <Route path="/" element={<Welcome />} />
-            <Route path="/sign-up" element={<SignUp setUser={setUser} />} />
-            <Route path="/sign-in" element={<SignIn setUser={setUser} />} />
-
-            <Route path="/home" element={<Home />} />
-            <Route
-              path="/profile"
-              element={<ProfilePage user={user} setUser={setUser} />}
-            />
-            <Route path="/edit-profile/:id" element={<UserProfileEdit />} />
-            <Route path="/camera" element={<CameraPage />} />
-            <Route
-              path="/challenges"
-              element={<ChallengeList user={user} setUser={setUser} />}
-            />
-            <Route path="/add-challenge" element={<ChallengeForm />} />
-            <Route path="/challenges" element={<ChallengeList />} />
-            <Route path="/profile" element={<ProfilePage />} />
-            <Route path="/comment" element={<Comment user={user} />} />
-
-            <Route path="/challengeCard" element={<ChallengeCard />} />
-          </Routes>
+          {loadingUser ? (
+            <p>Loading...</p>
+          ) : user ? (
+            <Routes>
+              <Route path="*" element={<Navigate to="/" />} />
+              <Route path="/home" element={<Home />} />
+              <Route
+                path="/profile"
+                element={<ProfilePage user={user} setUser={setUser} />}
+              />
+              <Route path="/edit-profile/:id" element={<UserProfileEdit />} />
+              <Route path="/camera" element={<CameraPage />} />
+              <Route
+                path="/challenges"
+                element={<ChallengeList user={user} setUser={setUser} />}
+              />
+              <Route path="/add-challenge" element={<ChallengeForm />} />
+              <Route path="/post/:id" element={<PostDetail />} />
+            </Routes>
+          ) : (
+            <Routes>
+              <Route path="/" element={<Welcome />} />
+              <Route path="/sign-in" element={<SignIn setUser={setUser} />} />
+              <Route path="/sign-up" element={<SignUp setUser={setUser} />} />
+            </Routes>
+          )}
         </main>
       </div>
     </>
