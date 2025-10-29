@@ -1,6 +1,5 @@
 import Post from "./Post"
 import axios from "axios"
-import Post from "../components/Post"
 import { useState } from "react"
 
 const Comment = () => {
@@ -16,18 +15,30 @@ const Comment = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    const respond = await axios.Post(
-      "http://localhost:3001/comment",
-      threadForm
-    )
-    setComment([...comment, respond.data])
-    setThreadForm({ username: "", thread: "" })
+    try {
+      const token = localStorage.getItem("token")
+      if (!token) {
+        alert("You must be logged in to comment!")
+        return
+      }
+      const res = await axios.post(
+        "http://localhost:3001/comment",
+        threadForm,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      )
+      setComment([...comment, res.data])
+      setThreadForm({ username: "", thread: "" })
+    } catch (err) {
+      console.error("Failed to post comment:", err)
+    }
   }
 
   return (
     <>
-      <div>
-        <form onSubmit={handleSubmit}>
+      <div className="comment-page">
+        <form className="comment-form" onSubmit={handleSubmit}>
           <label htmlFor="username">userName</label>
           <input
             type="text"
@@ -38,11 +49,12 @@ const Comment = () => {
           <label htmlFor="thread">comment</label>
           <textarea
             name="thread"
-            rows="7"
-            cols="25"
+            rows="4"
+            cols="17"
             onChange={handleChange}
             value={threadForm.thread}
           ></textarea>
+          <button type="submit">Comment</button>
         </form>
       </div>
     </>
