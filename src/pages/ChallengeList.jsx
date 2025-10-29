@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import axios from 'axios'
 import './ChallengeList.css'
 
-import { useNavigate } from "react-router-dom"
+import { useNavigate } from 'react-router-dom'
 
 const ChallengeList = () => {
   const [challenges, setChallenges] = useState([])
@@ -10,13 +10,13 @@ const ChallengeList = () => {
   const navigate = useNavigate()
 
   const fetchChallenges = async () => {
-    const res = await axios.get("http://localhost:3001/challenge")
+    const res = await axios.get('http://localhost:3001/challenge')
 
     const now = new Date()
     const filtered = res.data.filter((ch) => {
       const created = new Date(ch.createdAt)
       const hoursDiff = (now - created) / (1000 * 60 * 60)
-      return hoursDiff < 1
+      return hoursDiff < 24
     })
     setChallenges(filtered)
   }
@@ -35,7 +35,7 @@ const ChallengeList = () => {
 
   const playChallenge = () => {
     if (!randomChallenge) return
-    navigate("/camera", { state: { randomChallenge } })
+    navigate('/camera', { state: { randomChallenge } })
   }
   return (
     <div className="challenge-list-container">
@@ -59,15 +59,6 @@ const ChallengeList = () => {
       </ul>
 
       <button onClick={pickRandomChallenge}>Pick Random Challenge</button>
-
-      {randomChallenge && (
-        <div className="random-challenge">
-          <h3>Random Challenge Picked</h3>
-          <strong>{randomChallenge.title}</strong>:{' '}
-          {randomChallenge.description} ({randomChallenge.points} points)
-      <button onClick={pickRandomChallenge} className="random-challenge-btn">
-        Pick Random Challenge
-      </button>
 
       {randomChallenge && (
         <div
