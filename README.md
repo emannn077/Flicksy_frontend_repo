@@ -57,6 +57,7 @@ changed your mind about the photo you posted or your comment had a typo? You'd b
 * comments under posts
 * sign up and sign in
 * ability to post photos
+* can take photos via camera
 * can delete photos that been posted
 ***
 # Unresolved problems
