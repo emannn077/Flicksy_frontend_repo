@@ -29,7 +29,7 @@ const ChallengeForm = () => {
     <form className="challenge-form" onSubmit={handleSubmit}>
       <h2>Add a new Challenge</h2>
 
-      <label>Title</label>
+      <label>Challenge Title</label>
       <input
         name="title"
         value={formState.title}
@@ -56,7 +56,7 @@ const ChallengeForm = () => {
         required
       />
 
-      <button type="submit">Add</button>
+      <button type="submit">Add Challenge</button>
     </form>
   )
 }
