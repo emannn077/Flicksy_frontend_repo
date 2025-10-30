@@ -2,7 +2,7 @@ import { useState } from "react"
 import axios from "axios"
 import Client from "../services/api"
 import { useNavigate } from "react-router-dom"
-import "./ChallengeForm.css"
+import "../../public/stylesheet/challenge.css"
 
 const ChallengeForm = () => {
   const navigate = useNavigate()
@@ -11,19 +11,27 @@ const ChallengeForm = () => {
     description: "",
     points: "",
   })
+  const [isSubmitting, setIsSubmitting] = useState(false)
+
   const handleChange = (e) => {
     setFormState({ ...formState, [e.target.name]: e.target.value })
   }
 
   const handleSubmit = async (e) => {
     e.preventDefault()
+    setIsSubmitting(true)
+
     await Client.post("/challenge", formState)
-    setFormState({
-      title: "",
-      description: "",
-      points: "",
-    })
-    navigate("/challenges")
+
+    // Wait for animation to complete
+    setTimeout(() => {
+      setFormState({
+        title: "",
+        description: "",
+        points: "",
+      })
+      navigate("/challenges")
+    }, 300)
   }
 
   return (
@@ -35,6 +43,7 @@ const ChallengeForm = () => {
         name="title"
         value={formState.title}
         onChange={handleChange}
+        placeholder="Enter challenge title"
         required
       />
 
@@ -43,6 +52,7 @@ const ChallengeForm = () => {
         name="description"
         value={formState.description}
         onChange={handleChange}
+        placeholder="Describe your challenge"
         required
       />
 
@@ -52,12 +62,15 @@ const ChallengeForm = () => {
         name="points"
         value={formState.points}
         onChange={handleChange}
+        placeholder="5-10"
         min={5}
         max={10}
         required
       />
 
-      <button type="submit">Add Challenge</button>
+      <button type="submit" disabled={isSubmitting}>
+        {isSubmitting ? "Adding..." : "Add Challenge"}
+      </button>
     </form>
   )
 }

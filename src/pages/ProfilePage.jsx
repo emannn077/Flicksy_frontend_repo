@@ -106,7 +106,7 @@ const ProfilePage = ({ user, setUser }) => {
                   </button>
 
                   <button
-                    onClick={() => navigate(`/edit-profile/${user._id}`)}
+                    onClick={() => navigate(`/profile/${user._id}/edit`)}
                     className="btn-edit-profile"
                   >
                     <Edit2 className="btn-icon" />

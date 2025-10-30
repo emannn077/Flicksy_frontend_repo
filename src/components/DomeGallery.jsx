@@ -7,16 +7,21 @@ const DEFAULT_IMAGES = [
     src: "/images/cat.jpg",
     alt: "Abstract art",
   },
-  {
-    src: "/images/cute.jpg",
-    alt: "Modern sculpture",
-  },
+
   {
     src: "/images/download (1).jpg",
     alt: "Digital artwork",
   },
   {
     src: "/images/download.jpg",
+    alt: "Contemporary art",
+  },
+  {
+    src: "/images/image.jpeg",
+    alt: "Contemporary art",
+  },
+  {
+    src: "/images/image2.jpeg",
     alt: "Contemporary art",
   },
 ]
