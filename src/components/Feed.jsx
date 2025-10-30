@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react"
 import axios from "axios"
 import { useNavigate } from "react-router-dom"
-import Client from "../services/api"
+import Client, { BASE_URL } from "../services/api"
+import "../../public/stylesheet/camera.css"
 
 const Feed = ({ user }) => {
   const [posts, setPosts] = useState([])
@@ -12,18 +13,17 @@ const Feed = ({ user }) => {
   const navigate = useNavigate()
 
   const fetchPosts = async () => {
-    setLoading(true) // start loading
+    setLoading(true)
     try {
-      //so here if user is in profile page can get their post else in homepage all post
       const url = user && user._id ? `/post/user/${user._id}` : `/post`
       const res = await Client.get(url)
 
       setPosts(res.data)
       setLoading(false)
     } catch (err) {
-      console.error('Failed to fetch posts:', err)
+      console.error("Failed to fetch posts:", err)
       setError(
-        err.response?.data?.message || 'An error occurred while fetching posts.'
+        err.response?.data?.message || "An error occurred while fetching posts."
       )
       setLoading(false)
     }
@@ -33,8 +33,8 @@ const Feed = ({ user }) => {
     fetchPosts()
   }, [user?._id])
 
-  //delete the post
-  const handleDelete = async (postId) => {
+  const handleDelete = async (postId, e) => {
+    e.stopPropagation()
     if (!confirm("Are you sure you want to delete the post?")) return
     try {
       await Client.delete(`/post/${postId}`, {
@@ -43,59 +43,98 @@ const Feed = ({ user }) => {
         },
       })
       setPosts(posts.filter((p) => p._id !== postId))
-      navigate("/home")
     } catch (err) {
       console.error("Failed to delete post:", err)
-      setDeleteError("Could not delete post,Please try again.")
+      setDeleteError("Could not delete post. Please try again.")
     }
   }
 
-  //here it will show loading when fetching the posts.
-  if (loading) return <p>Loading posts...</p>
+  if (loading) {
+    return (
+      <div className="feed-loading">
+        <div className="loading-spinner"></div>
+        <p>Loading posts...</p>
+      </div>
+    )
+  }
 
-  //here it will show error if the posts arent fetched
-  if (error) return <p style={{ color: "red" }}>{error}</p>
+  if (error) {
+    return (
+      <div className="feed-error">
+        <p>{error}</p>
+      </div>
+    )
+  }
 
   return (
-    <div className="p-4">
-      <h3 className="text-xl font-semibold mb-4">
-        {user ? 'Your Posts' : 'All Posts'}
-      </h3>
+    <div className="feed-container">
+      {deleteError && (
+        <div className="delete-error">
+          <p>{deleteError}</p>
+        </div>
+      )}
 
       {posts.length === 0 ? (
-        <p>No posts yet.</p>
+        <div className="no-posts">
+          <div className="no-posts-icon">📷</div>
+          <p className="no-posts-text">No posts yet.</p>
+          <p className="no-posts-subtext">Start sharing your moments!</p>
+        </div>
       ) : (
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+        <div className="posts-grid">
           {posts.map((post) => (
             <div
               key={post._id}
+              className="post-card"
               onClick={() => navigate(`/post/${post._id}`)}
-              className="border rounded-lg overflow-hidden shadow"
             >
-              <img
-                src={post.image_url}
-                alt="Post"
-                className="w-full h-48 object-cover"
-              />
-              <div className="p-2">
-                <p className="text-sm">{post.caption}</p>
+              {/* User Info at Top */}
+              {!user && post.user_id && (
+                <div className="post-header">
+                  <img
+                    src={
+                      post.user_id.profile_picture
+                        ? `${BASE_URL}${post.user_id.profile_picture}`
+                        : "https://cdn-icons-png.flaticon.com/512/847/847969.png"
+                    }
+                    alt={post.user_id.username}
+                    className="user-avatar"
+                  />
+                  <span className="post-username">{post.user_id.username}</span>
+                </div>
+              )}
+
+              {/* Post Image */}
+              <div className="post-image-wrapper">
+                <img src={post.image_url} alt="Post" className="post-image" />
+              </div>
+
+              {/* Post Info */}
+              <div className="post-info">
+                {post.caption && (
+                  <p className="post-caption-preview">
+                    {post.caption.length > 60
+                      ? `${post.caption.substring(0, 60)}...`
+                      : post.caption}
+                  </p>
+                )}
+
+                {post.challenge_id && (
+                  <div className="post-challenge-badge">
+                    <span className="challenge-icon">🎯</span>
+                    <span className="challenge-title">
+                      {post.challenge_id.title}
+                    </span>
+                  </div>
+                )}
+
                 {user && post.user_id?._id === user._id && (
                   <button
-                    onClick={() => handleDelete(post._id)}
-                    className="mt-2 px-3 py-1 bg-red-500 text-white text-xs rounded"
+                    onClick={(e) => handleDelete(post._id, e)}
+                    className="delete-btn"
                   >
-                    Delete Post
+                    🗑️ Delete
                   </button>
-                )}
-                {post.challenge_id && (
-                  <p className="text-xs text-gray-600 mt-1">
-                    🎯 Challenge: {post.challenge_id.title}
-                  </p>
-                )}
-                {!user && (
-                  <p className="text-xs text-gray-500 mt-1">
-                    👤 {post.user_id?.username}
-                  </p>
                 )}
               </div>
             </div>

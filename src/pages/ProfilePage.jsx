@@ -3,9 +3,10 @@ import { useNavigate } from "react-router-dom"
 import axios from "axios"
 import Client, { BASE_URL } from "../services/api"
 import Feed from "../components/Feed"
+import { Camera, Edit2, Award } from "lucide-react"
+import "../../public/stylesheet/camera.css"
 
 const ProfilePage = ({ user, setUser }) => {
-  // const [user, setUser] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState("")
   const navigate = useNavigate()
@@ -46,62 +47,85 @@ const ProfilePage = ({ user, setUser }) => {
     fetchUser()
   }, [])
 
+  if (loading) {
+    return (
+      <div className="profile-loading">
+        <div className="loading-spinner"></div>
+        <p>Loading profile...</p>
+      </div>
+    )
+  }
+
+  if (error) {
+    return (
+      <div className="profile-error">
+        <p>{error}</p>
+      </div>
+    )
+  }
+
   return (
-    <div style={{ padding: "20px" }}>
+    <div className="profile-page">
       {user ? (
-        <>
-          <h2>{user.username}'s Profile</h2>
+        <div className="profile-container">
+          {/* Profile Header Section */}
+          <div className="profile-header">
+            <div className="profile-content">
+              {/* Profile Picture */}
+              <div className="profile-picture-wrapper">
+                <img
+                  src={
+                    user.profile_picture
+                      ? `${BASE_URL}${user.profile_picture}`
+                      : "https://cdn-icons-png.flaticon.com/512/847/847969.png"
+                  }
+                  alt="Profile"
+                  className="profile-picture"
+                />
+              </div>
 
-          {/* to upload profile image we used multer an here below is the edit profile picture */}
-          <img
-            src={
-              user.profile_picture
-                ? `${BASE_URL}${user.profile_picture}`
-                : "/default-avatar.png"
-            }
-            alt="Profile"
-            width="100"
-            height="100"
-          />
-          <p>Email: {user.email}</p>
-          <p>Points: {user.points}</p>
+              {/* Profile Info */}
+              <div className="profile-info">
+                <h1 className="profile-username">{user.username}</h1>
+                <p className="profile-email">{user.email}</p>
 
-          <button
-            onClick={() => navigate("/camera")}
-            style={{
-              marginTop: "15px",
-              padding: "10px 20px",
-              borderRadius: "8px",
-              border: "none",
-              backgroundColor: "#4CAF50",
-              color: "white",
-              cursor: "pointer",
-            }}
-          >
-            + Add Post
-          </button>
+                {/* Points Badge */}
+                <div className="points-badge">
+                  <Award className="award-icon" />
+                  <span className="points-text">{user.points} Points</span>
+                </div>
 
-          {/* editing the profile page */}
-          <button
-            onClick={() => navigate(`/edit-profile/${user._id}`)}
-            style={{
-              marginTop: "10px",
-              padding: "10px 20px",
-              borderRadius: "8px",
-              border: "none",
-              backgroundColor: "#007bff",
-              color: "white",
-              cursor: "pointer",
-              display: "block",
-            }}
-          >
-            Edit Profile
-          </button>
+                {/* Action Buttons */}
+                <div className="action-buttons">
+                  <button
+                    onClick={() => navigate("/camera")}
+                    className="btn-add-post"
+                  >
+                    <Camera className="btn-icon" />
+                    Add Post
+                  </button>
 
-          <hr style={{ margin: "20px 0" }} />
+                  <button
+                    onClick={() => navigate(`/edit-profile/${user._id}`)}
+                    className="btn-edit-profile"
+                  >
+                    <Edit2 className="btn-icon" />
+                    Edit Profile
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
 
-          <Feed user={user} />
-        </>
+          {/* Divider */}
+          <div className="profile-divider"></div>
+
+          {/* Feed Section */}
+          <div className="feed-section">
+            <h2 className="feed-title">My Posts</h2>
+            <Feed user={user} />
+          </div>
+        </div>
       ) : null}
     </div>
   )
