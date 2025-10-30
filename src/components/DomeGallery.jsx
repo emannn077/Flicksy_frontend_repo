@@ -254,6 +254,40 @@ export default function DomeGallery({
     applyTransform(rotationRef.current.x, rotationRef.current.y)
   }, [])
 
+  // AUTO-ROTATION EFFECT - Add this after the applyTransform useEffect
+  useEffect(() => {
+    let animationFrame
+    const rotationSpeed = 0.05 // Adjust: higher = faster (try 0.02 to 0.1)
+
+    const autoRotate = () => {
+      // Pause rotation during user interactions
+      if (
+        draggingRef.current ||
+        focusedElRef.current ||
+        openingRef.current ||
+        inertiaRAF.current
+      ) {
+        animationFrame = requestAnimationFrame(autoRotate)
+        return
+      }
+
+      // Rotate from right to left (increment Y rotation)
+      const nextY = wrapAngleSigned(rotationRef.current.y + rotationSpeed)
+      rotationRef.current.y = nextY
+      applyTransform(rotationRef.current.x, nextY)
+
+      animationFrame = requestAnimationFrame(autoRotate)
+    }
+
+    animationFrame = requestAnimationFrame(autoRotate)
+
+    return () => {
+      if (animationFrame) {
+        cancelAnimationFrame(animationFrame)
+      }
+    }
+  }, [])
+
   const stopInertia = useCallback(() => {
     if (inertiaRAF.current) {
       cancelAnimationFrame(inertiaRAF.current)
