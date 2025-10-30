@@ -32,7 +32,7 @@ const UserProfileEdit = () => {
     const fetchUser = async () => {
       try {
         const token = localStorage.getItem("token")
-        const res = await Client.get(`/users/profile/${id}/posts`)
+        const res = await Client.get(`/users/profile/${id}`)
         setFormData(res.data)
         if (res.data.profile_picture) {
           setPreview(`${BASE_URL}${res.data.profile_picture}`)
@@ -86,7 +86,7 @@ const UserProfileEdit = () => {
       if (file) data.append("profile_picture", file)
       if (passwordData.password) data.append("password", passwordData.password)
 
-      const res = await Client.put(`/users/profile/${id}`, data, {
+      const res = await Client.put(`/users/profile/${id}/edit`, data, {
         headers: {
           "Content-Type": "multipart/form-data",
         },

@@ -5,7 +5,6 @@ import "../../public/stylesheet/camera.css"
 const Post = ({ post }) => {
   return (
     <div className="post-container">
-      {/* User Header */}
       <div className="post-user-header">
         <img
           src={
@@ -21,12 +20,10 @@ const Post = ({ post }) => {
         </span>
       </div>
 
-      {/* Post Image */}
       <div className="post-image-container">
         <img src={post.image_url} alt="Post" className="post-img" />
       </div>
 
-      {/* Post Details */}
       <div className="post-details">
         {post.caption && <p className="post-caption-text">{post.caption}</p>}
       </div>

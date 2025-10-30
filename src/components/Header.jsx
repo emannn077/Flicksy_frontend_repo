@@ -17,7 +17,6 @@ const Header = ({ user, handleLogOut }) => {
       <div className="header-container">
         {user ? (
           <>
-            {/* Logo/Brand */}
             <div className="header-brand">
               <div className="brand-icon-wrapper">
                 <Camera className="brand-icon" />
@@ -25,7 +24,6 @@ const Header = ({ user, handleLogOut }) => {
               <span className="brand-text">Flicksy</span>
             </div>
 
-            {/* Navigation Links */}
             <nav className="header-nav">
               <NavLink to="/home" className="nav-link">
                 <Home className="nav-icon" />
@@ -49,7 +47,6 @@ const Header = ({ user, handleLogOut }) => {
               </NavLink>
             </nav>
 
-            {/* Logout Button */}
             <button onClick={handleLogOut} className="logout-btn">
               <LogOut className="btn-icon" />
               <span className="btn-text">Sign Out</span>
@@ -57,7 +54,6 @@ const Header = ({ user, handleLogOut }) => {
           </>
         ) : (
           <>
-            {/* Logo/Brand for logged out */}
             <div className="header-brand">
               <div className="brand-icon-wrapper">
                 <Camera className="brand-icon" />
@@ -65,7 +61,6 @@ const Header = ({ user, handleLogOut }) => {
               <span className="brand-text">Flicksy</span>
             </div>
 
-            {/* Auth Navigation */}
             <nav className="header-nav-auth">
               <NavLink to="/" className="nav-link-auth">
                 Welcome
