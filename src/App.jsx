@@ -42,7 +42,6 @@ const App = () => {
     setLoadingUser(false)
   }, [])
 
-  // ✅ Redirect to /profile after login
   useEffect(() => {
     if (user) {
       navigate("/profile")
@@ -58,13 +57,12 @@ const App = () => {
             <p>Loading...</p>
           ) : user ? (
             <Routes>
-              <Route path="*" element={<Navigate to="/" />} />
               <Route path="/home" element={<Home />} />
               <Route
                 path="/profile"
                 element={<ProfilePage user={user} setUser={setUser} />}
               />
-              <Route path="/edit-profile/:id" element={<UserProfileEdit />} />
+              <Route path="/profile/:id/edit" element={<UserProfileEdit />} />
               <Route path="/camera" element={<CameraPage />} />
               <Route
                 path="/challenges"
@@ -72,6 +70,7 @@ const App = () => {
               />
               <Route path="/add-challenge" element={<ChallengeForm />} />
               <Route path="/post/:id" element={<PostDetail />} />
+              <Route path="*" element={<Navigate to="/" />} />{" "}
             </Routes>
           ) : (
             <Routes>

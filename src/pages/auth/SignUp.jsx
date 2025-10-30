@@ -1,8 +1,8 @@
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import DomeGallery from "../../components/DomeGallery"
-
-import "/src/App.css"
+import Client from "../../services/api.js"
+import "../../../public/stylesheet/design.css"
 
 const SignUp = () => {
   const navigate = useNavigate()
@@ -17,50 +17,32 @@ const SignUp = () => {
   }
 
   const [formValues, setFormValues] = useState(initialState)
-  const [selectedImage, setSelectedImage] = useState(null)
   const [error, setError] = useState("")
 
-  // Handle text inputs
   const handleChange = (e) => {
     setFormValues({ ...formValues, [e.target.name]: e.target.value })
   }
 
-  // Handle file input
-  const handleFileChange = (e) => {
-    setSelectedImage(e.target.files[0]) // ✅ Only the first file
-  }
-
-  // Handle submit
   const handleSubmit = async (e) => {
     e.preventDefault()
     setError("")
 
-    // ✅ Check password match first
     if (formValues.password !== formValues.confirmPassword) {
       setError("Passwords must match.")
       return
     }
 
     try {
-      const formData = new FormData()
-      formData.append("firstName", formValues.firstName)
-      formData.append("lastName", formValues.lastName)
-      formData.append("username", formValues.username)
-      formData.append("email", formValues.email)
-      formData.append("password", formValues.password)
-      if (selectedImage) formData.append("profile_picture", selectedImage)
-
-      const res = await Client.post(
-        "http://localhost:3001/auth/sign-up",
-        formData,
-        {
-          headers: { "Content-Type": "multipart/form-data" },
-        }
-      )
+      const res = await Client.post("/auth/sign-up", {
+        firstName: formValues.firstName,
+        lastName: formValues.lastName,
+        username: formValues.username,
+        email: formValues.email,
+        password: formValues.password,
+      })
 
       if (res.status === 200) {
         setFormValues(initialState)
-        setSelectedImage(null)
         navigate("/sign-in")
       }
     } catch (err) {
@@ -72,101 +54,146 @@ const SignUp = () => {
   return (
     <>
       <DomeGallery />
-      <div className="signup-page">
-        <div className="signup-box">
-          <h2>Sign Up</h2>
+      <div className="signin-page">
+        <div className="signin-container">
+          {/* Brand Section */}
+          <div className="signin-brand">
+            <div className="brand-icon">📸</div>
+            <h1 className="brand-name">Flicksy</h1>
+            <p className="brand-tagline">Create Your Account</p>
+          </div>
 
-          {error && <p className="error">{error}</p>}
-
-          <form onSubmit={handleSubmit}>
-            <div className="input-class">
-              <label>First Name:</label>
-              <input
-                type="text"
-                name="firstName"
-                value={formValues.firstName}
-                onChange={handleChange}
-                required
-              />
+          {/* Sign Up Box */}
+          <div className="signin-box">
+            <div className="signin-header">
+              <h2>Sign Up</h2>
+              <p className="signin-subtitle">Join the community today</p>
             </div>
 
-            <div className="input-class">
-              <label>Last Name:</label>
-              <input
-                type="text"
-                name="lastName"
-                value={formValues.lastName}
-                onChange={handleChange}
-                required
-              />
-            </div>
+            {error && <div className="error-message">{error}</div>}
 
-            <div className="input-class">
-              <label>Username:</label>
-              <input
-                type="text"
-                name="username"
-                value={formValues.username}
-                onChange={handleChange}
-                required
-              />
-            </div>
+            <form onSubmit={handleSubmit} className="signin-form">
+              {/* First Name */}
+              <div className="input-wrapper">
+                <span className="input-icon">👤</span>
+                <div className="input-class">
+                  <label>First Name</label>
+                  <input
+                    type="text"
+                    name="firstName"
+                    value={formValues.firstName}
+                    onChange={handleChange}
+                    placeholder="Enter your first name"
+                    required
+                  />
+                </div>
+              </div>
 
-            <div className="input-class">
-              <label>Email:</label>
-              <input
-                type="email"
-                name="email"
-                value={formValues.email}
-                onChange={handleChange}
-                required
-              />
-            </div>
+              {/* Last Name */}
+              <div className="input-wrapper">
+                <span className="input-icon">👤</span>
+                <div className="input-class">
+                  <label>Last Name</label>
+                  <input
+                    type="text"
+                    name="lastName"
+                    value={formValues.lastName}
+                    onChange={handleChange}
+                    placeholder="Enter your last name"
+                    required
+                  />
+                </div>
+              </div>
 
-            <div className="input-class">
-              <label>Password:</label>
-              <input
-                type="password"
-                name="password"
-                value={formValues.password}
-                onChange={handleChange}
-                required
-              />
-            </div>
+              {/* Username */}
+              <div className="input-wrapper">
+                <span className="input-icon">@</span>
+                <div className="input-class">
+                  <label>Username</label>
+                  <input
+                    type="text"
+                    name="username"
+                    value={formValues.username}
+                    onChange={handleChange}
+                    placeholder="Choose a username"
+                    required
+                  />
+                </div>
+              </div>
 
-            <div className="input-class">
-              <label>Confirm Password:</label>
-              <input
-                type="password"
-                name="confirmPassword"
-                value={formValues.confirmPassword}
-                onChange={handleChange}
-                required
-              />
-            </div>
+              {/* Email */}
+              <div className="input-wrapper">
+                <span className="input-icon">✉️</span>
+                <div className="input-class">
+                  <label>Email</label>
+                  <input
+                    type="email"
+                    name="email"
+                    value={formValues.email}
+                    onChange={handleChange}
+                    placeholder="Enter your email"
+                    required
+                  />
+                </div>
+              </div>
 
-            <div className="input-class">
-              <label>Profile Picture:</label>
-              <input
-                type="file"
-                name="profile_picture"
-                onChange={handleFileChange}
-                accept="image/*"
-                required
-              />
-            </div>
+              <div className="input-wrapper">
+                <span className="input-icon">🔒</span>
+                <div className="input-class">
+                  <label>Password</label>
+                  <input
+                    type="password"
+                    name="password"
+                    value={formValues.password}
+                    onChange={handleChange}
+                    placeholder="Create a password"
+                    required
+                  />
+                </div>
+              </div>
 
-            <button
-              type="submit"
-              disabled={
-                !formValues.email ||
-                !formValues.password ||
-                formValues.password !== formValues.confirmPassword
-              }
-            >
-              Sign Up
-            </button>
-          </form>
+              <div className="input-wrapper">
+                <span className="input-icon">🔒</span>
+                <div className="input-class">
+                  <label>Confirm Password</label>
+                  <input
+                    type="password"
+                    name="confirmPassword"
+                    value={formValues.confirmPassword}
+                    onChange={handleChange}
+                    placeholder="Confirm your password"
+                    required
+                  />
+                </div>
+              </div>
+
+              <button
+                type="submit"
+                className="signin-button"
+                disabled={
+                  !formValues.email ||
+                  !formValues.password ||
+                  formValues.password !== formValues.confirmPassword
+                }
+              >
+                <span className="button-text">Sign Up</span>
+                <span className="button-icon">→</span>
+              </button>
+            </form>
+
+            {/* Footer */}
+            <div className="signin-footer">
+              <p className="footer-text">
+                Already have an account?
+                <button
+                  onClick={() => navigate("/sign-in")}
+                  className="link-button"
+                >
+                  Sign In
+                </button>
+              </p>
+            </div>
+          </div>
         </div>
       </div>
     </>

@@ -3,6 +3,7 @@ import { BASE_URL } from "../services/api"
 import axios from "axios"
 import Client from "../services/api"
 import { useParams, useNavigate } from "react-router-dom"
+import "../../public/stylesheet/edit.css"
 
 const UserProfileEdit = () => {
   const { id } = useParams()
@@ -31,7 +32,7 @@ const UserProfileEdit = () => {
     const fetchUser = async () => {
       try {
         const token = localStorage.getItem("token")
-        const res = await Client.get(`/user/profile/${id}`)
+        const res = await Client.get(`/users/profile/${id}`)
         setFormData(res.data)
         if (res.data.profile_picture) {
           setPreview(`${BASE_URL}${res.data.profile_picture}`)
@@ -85,7 +86,7 @@ const UserProfileEdit = () => {
       if (file) data.append("profile_picture", file)
       if (passwordData.password) data.append("password", passwordData.password)
 
-      const res = await Client.put(`/user/profile/${id}`, data, {
+      const res = await Client.put(`/users/profile/${id}/edit`, data, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -109,24 +110,15 @@ const UserProfileEdit = () => {
   }
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100 p-6">
-      <div className="bg-white shadow-md rounded-lg p-8 w-full max-w-lg">
-        <h2 className="text-2xl font-semibold mb-6 text-center text-gray-800">
-          Edit Profile
-        </h2>
+    <div className="profile-edit-container">
+      <div className="profile-edit-card">
+        <h2 className="profile-edit-title">Edit Profile</h2>
 
-        {error && (
-          <p className="text-red-600 text-center mb-4 font-medium">{error}</p>
-        )}
-        {message && (
-          <p className="text-green-600 text-center mb-4 font-medium">
-            {message}
-          </p>
-        )}
+        {error && <p className="message-error">{error}</p>}
+        {message && <p className="message-success">{message}</p>}
 
-        {/* this is for uploading profile image */}
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="flex flex-col items-center">
+        <form onSubmit={handleSubmit} className="profile-edit-form">
+          <div className="profile-picture-section">
             <img
               src={
                 preview
@@ -134,97 +126,92 @@ const UserProfileEdit = () => {
                   : "https://cdn-icons-png.flaticon.com/512/847/847969.png"
               }
               alt="Profile Preview"
-              className="w-32 h-32 object-cover rounded-full border mb-3"
+              className="profile-preview-image"
             />
             <input
               type="file"
               accept="image/*"
               onChange={handleFileChange}
-              className="text-sm"
+              className="file-input"
             />
           </div>
 
-          <div>
-            <label className="block text-gray-700">First Name</label>
+          <div className="form-group">
+            <label className="form-label">First Name</label>
             <input
               type="text"
               name="firstName"
               value={formData.firstName}
               onChange={handleChange}
-              className="w-full border rounded p-2"
+              className="form-input"
               required
             />
           </div>
 
-          <div>
-            <label className="block text-gray-700">Last Name</label>
+          <div className="form-group">
+            <label className="form-label">Last Name</label>
             <input
               type="text"
               name="lastName"
               value={formData.lastName}
               onChange={handleChange}
-              className="w-full border rounded p-2"
+              className="form-input"
               required
             />
           </div>
 
-          <div>
-            <label className="block text-gray-700">Username</label>
+          <div className="form-group">
+            <label className="form-label">Username</label>
             <input
               type="text"
               name="username"
               value={formData.username}
               onChange={handleChange}
-              className="w-full border rounded p-2"
+              className="form-input"
               required
             />
           </div>
 
-          <div>
-            <label className="block text-gray-700">Email</label>
+          <div className="form-group">
+            <label className="form-label">Email</label>
             <input
               type="email"
               name="email"
               value={formData.email}
               onChange={handleChange}
-              className="w-full border rounded p-2"
+              className="form-input"
               required
             />
           </div>
 
-          <div className="pt-2">
-            <label className="block text-gray-700">New Password</label>
+          <div className="form-group password-section">
+            <label className="form-label">New Password</label>
             <input
               type="password"
               name="password"
               value={passwordData.password}
               onChange={handlePasswordChange}
-              className="w-full border rounded p-2"
+              className="form-input"
               placeholder="Enter new password (optional)"
             />
           </div>
 
-          <div>
-            <label className="block text-gray-700">Confirm Password</label>
+          <div className="form-group">
+            <label className="form-label">Confirm Password</label>
             <input
               type="password"
               name="confirmPassword"
               value={passwordData.confirmPassword}
               onChange={handlePasswordChange}
-              className="w-full border rounded p-2"
+              className="form-input"
               placeholder="Confirm new password"
             />
           </div>
 
-          {/* Submit Button */}
           <button
             type="submit"
             disabled={loading}
-            className={`w-full py-2 rounded text-white font-medium ${
-              loading
-                ? "bg-blue-300 cursor-not-allowed"
-                : "bg-blue-500 hover:bg-blue-600 transition"
-            }`}
+            className={`submit-button ${loading ? "loading" : ""}`}
           >
             {loading ? "Saving..." : "Save Changes"}
           </button>

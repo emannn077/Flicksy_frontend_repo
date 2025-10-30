@@ -27,7 +27,6 @@ const SignIn = ({ setUser }) => {
         setUser(user)
         setFormValues({ username: "", password: "" })
 
-        // wait one tick so token persists before redirect
         setTimeout(() => navigate("/profile"), 100)
       }
     } catch (err) {
@@ -41,7 +40,6 @@ const SignIn = ({ setUser }) => {
       <DomeGallery />
       <div className="signin-page">
         <div className="signin-container">
-          {/* Sign In Box */}
           <div className="signin-box">
             <div className="signin-header">
               <h2>Sign In</h2>

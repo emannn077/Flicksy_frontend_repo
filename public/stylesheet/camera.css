@@ -501,8 +501,9 @@
 .btn-edit-profile {
   display: flex;
   align-items: center;
+  justify-content: center; /* ✅ keeps icon & text centered */
   gap: 0.5rem;
-  padding: 0.875rem 1.75rem;
+  padding: 0.6rem 1.25rem; /* ✅ less padding = less stretch */
   font-weight: 600;
   border-radius: 10px;
   border: none;
@@ -510,11 +511,14 @@
   transition: all 0.3s ease;
   font-size: 1rem;
   color: #1a1a1a;
+  min-width: 140px; /* ✅ gives consistent shape */
+  max-width: 160px; /* ✅ prevents stretch on flex layouts */
+  height: 44px; /* ✅ uniform button height */
 }
 
 .btn-icon {
-  width: 1.25rem;
-  height: 1.25rem;
+  width: 1.1rem;
+  height: 1.1rem;
 }
 
 .btn-add-post {
@@ -1374,5 +1378,75 @@
   .camera-frame {
     max-width: 300px;
     padding: 0.875rem;
+  }
+}
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.75);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999; /* ✅ Ensure it's above everything */
+}
+
+.popup-box {
+  background: rgba(26, 26, 26, 0.95);
+  border: 2px solid rgba(251, 191, 36, 0.5);
+  border-radius: 20px;
+  padding: 2rem;
+  text-align: center;
+  width: 90%;
+  max-width: 400px;
+  box-shadow: 0 0 40px rgba(251, 191, 36, 0.4);
+  animation: scaleUp 0.25s ease-out;
+  z-index: 10000;
+}
+
+.popup-message {
+  color: white;
+  font-size: 1.1rem;
+  margin-bottom: 1.5rem;
+}
+
+.popup-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.popup-btn {
+  padding: 0.75rem 1.5rem;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.popup-btn.cancel {
+  background: rgba(255, 255, 255, 0.15);
+  color: white;
+}
+
+.popup-btn.confirm {
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  color: white;
+}
+
+.popup-btn:hover {
+  transform: scale(1.05);
+}
+
+@keyframes scaleUp {
+  from {
+    transform: scale(0.9);
+    opacity: 0.8;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
   }
 }

@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react"
 import axios from "axios"
 import Client from "../services/api"
-import "./ChallengeList.css"
-
+import "../../public/stylesheet/challenge.css"
 import { useNavigate } from "react-router-dom"
 
 const ChallengeList = ({ user }) => {
@@ -32,15 +31,14 @@ const ChallengeList = ({ user }) => {
     setRandomChallenge(challenges[randomIndex])
   }
 
-  //here i am adding playChallenge where if user clicks on any challenge it will take it to cameera page
-
-  const playChallenge = async () => {
-    if (!randomChallenge) return
-    navigate("/camera", { state: { randomChallenge } })
+  const playChallenge = async (challenge) => {
+    if (!challenge) return
+    navigate("/camera", { state: { randomChallenge: challenge } })
   }
+
   return (
     <div className="challenge-list-container">
-      <h2 className="challenge-list-title">All Challenges (Last 24 Hour)</h2>
+      <h2 className="challenge-list-title">Play Challenges</h2>
 
       <ul className="challenge-list">
         {challenges.map((ch) => (
@@ -48,6 +46,8 @@ const ChallengeList = ({ user }) => {
             key={ch._id}
             className="challenge-item"
             onClick={() => playChallenge(ch)}
+            tabIndex={0}
+            onKeyPress={(e) => e.key === "Enter" && playChallenge(ch)}
           >
             <div className="challenge-info">
               <strong className="challenge-title">
@@ -60,14 +60,18 @@ const ChallengeList = ({ user }) => {
         ))}
       </ul>
 
-      <button onClick={pickRandomChallenge}>Pick Random Challenge</button>
+      <button onClick={pickRandomChallenge}>🎲 Pick Random Challenge</button>
 
       {randomChallenge && (
         <div
           className="random-challenge-box"
           onClick={() => playChallenge(randomChallenge)}
+          tabIndex={0}
+          onKeyPress={(e) =>
+            e.key === "Enter" && playChallenge(randomChallenge)
+          }
         >
-          <h3 className="random-challenge-title">Random Challenge Picked</h3>
+          <h3 className="random-challenge-title">🎯 Random Challenge Picked</h3>
           <div className="random-challenge-info">
             <strong className="challenge-title">
               {randomChallenge.title}

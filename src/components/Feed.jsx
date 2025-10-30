@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react"
-import axios from "axios"
 import { useNavigate } from "react-router-dom"
 import Client, { BASE_URL } from "../services/api"
 import "../../public/stylesheet/camera.css"
@@ -8,7 +7,9 @@ const Feed = ({ user }) => {
   const [posts, setPosts] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState("")
-  const [deleteError, setDeleteError] = useState("")
+  const [message, setMessage] = useState("")
+  const [messageType, setMessageType] = useState("")
+  const [confirmPost, setConfirmPost] = useState(null)
 
   const navigate = useNavigate()
 
@@ -17,14 +18,13 @@ const Feed = ({ user }) => {
     try {
       const url = user && user._id ? `/post/user/${user._id}` : `/post`
       const res = await Client.get(url)
-
       setPosts(res.data)
-      setLoading(false)
     } catch (err) {
       console.error("Failed to fetch posts:", err)
       setError(
         err.response?.data?.message || "An error occurred while fetching posts."
       )
+    } finally {
       setLoading(false)
     }
   }
@@ -33,44 +33,90 @@ const Feed = ({ user }) => {
     fetchPosts()
   }, [user?._id])
 
-  const handleDelete = async (postId, e) => {
+  const openConfirmPopup = (postId, e) => {
     e.stopPropagation()
-    if (!confirm("Are you sure you want to delete the post?")) return
+    console.log("Opening popup for post:", postId)
+    setConfirmPost(postId)
+  }
+
+  const handleConfirmDelete = async () => {
     try {
-      await Client.delete(`/post/${postId}`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
+      const token = localStorage.getItem("token")
+      if (!token) {
+        setMessage("Unauthorized. Please log in again.")
+        setMessageType("error")
+        return
+      }
+
+      await Client.delete(`/post/${confirmPost}`, {
+        headers: { Authorization: `Bearer ${token}` },
       })
-      setPosts(posts.filter((p) => p._id !== postId))
+
+      setPosts((prev) => prev.filter((p) => p._id !== confirmPost))
+      setMessage(" Post deleted successfully!")
+      setMessageType("success")
     } catch (err) {
       console.error("Failed to delete post:", err)
-      setDeleteError("Could not delete post. Please try again.")
+      setMessage(" Could not delete post. Try again.")
+      setMessageType("error")
+    } finally {
+      setConfirmPost(null)
+      setTimeout(() => setMessage(""), 2500)
     }
   }
 
-  if (loading) {
+  const handleCancelDelete = () => setConfirmPost(null)
+
+  if (loading)
     return (
       <div className="feed-loading">
         <div className="loading-spinner"></div>
         <p>Loading posts...</p>
       </div>
     )
-  }
 
-  if (error) {
+  if (error)
     return (
       <div className="feed-error">
         <p>{error}</p>
       </div>
     )
-  }
 
   return (
     <div className="feed-container">
-      {deleteError && (
-        <div className="delete-error">
-          <p>{deleteError}</p>
+      {message && (
+        <div
+          className={`message-toast ${
+            messageType === "success"
+              ? "success"
+              : messageType === "error"
+              ? "error"
+              : ""
+          }`}
+        >
+          {message}
+        </div>
+      )}
+
+      {/*Popup Confirmation */}
+      {confirmPost && (
+        <div className="popup-overlay">
+          <div className="popup-box">
+            <p className="popup-message">
+              Are you sure you want to delete this post?
+            </p>
+            <div className="popup-buttons">
+              <button onClick={handleCancelDelete} className="popup-btn cancel">
+                Cancel
+              </button>
+              <button
+                onClick={handleConfirmDelete}
+                className="popup-btn confirm"
+              >
+                Confirm Delete
+              </button>
+            </div>
+          </div>
         </div>
       )}
 
@@ -88,7 +134,6 @@ const Feed = ({ user }) => {
               className="post-card"
               onClick={() => navigate(`/post/${post._id}`)}
             >
-              {/* User Info at Top */}
               {!user && post.user_id && (
                 <div className="post-header">
                   <img
@@ -104,12 +149,10 @@ const Feed = ({ user }) => {
                 </div>
               )}
 
-              {/* Post Image */}
               <div className="post-image-wrapper">
                 <img src={post.image_url} alt="Post" className="post-image" />
               </div>
 
-              {/* Post Info */}
               <div className="post-info">
                 {post.caption && (
                   <p className="post-caption-preview">
@@ -130,7 +173,7 @@ const Feed = ({ user }) => {
 
                 {user && post.user_id?._id === user._id && (
                   <button
-                    onClick={(e) => handleDelete(post._id, e)}
+                    onClick={(e) => openConfirmPopup(post._id, e)}
                     className="delete-btn"
                   >
                     🗑️ Delete

@@ -1,5 +1,4 @@
 import { useState } from "react"
-import axios from "axios"
 import Client from "../services/api"
 
 const AddComment = ({ postId, user, onCommentAdded }) => {
@@ -7,11 +6,13 @@ const AddComment = ({ postId, user, onCommentAdded }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
+    if (!thread.trim()) return // Don't submit empty comments
+
     try {
       const res = await Client.post("/comment", {
         thread,
-        post: postId, // ✅ match schema
-        user: user._id, // ✅ match schema
+        post: postId,
+        user: user._id,
       })
       onCommentAdded(res.data)
       setThread("")
@@ -21,18 +22,19 @@ const AddComment = ({ postId, user, onCommentAdded }) => {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-2">
+    <form onSubmit={handleSubmit} className="add-comment-form">
       <textarea
         name="thread"
         rows="3"
         placeholder="Write a comment..."
         value={thread}
         onChange={(e) => setThread(e.target.value)}
-        className="border rounded p-2 w-full"
+        className="add-comment-textarea"
       ></textarea>
       <button
         type="submit"
-        className="bg-blue-500 text-white rounded px-3 py-1 hover:bg-blue-600"
+        disabled={!thread.trim()}
+        className="add-comment-btn"
       >
         Post Comment
       </button>

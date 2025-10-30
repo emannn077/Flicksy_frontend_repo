@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react"
 import { useParams, Link, useNavigate } from "react-router-dom"
-import axios from "axios"
 import Client from "../services/api"
 import CommentSection from "../components/CommentSection"
+import "../../public/stylesheet/design.css"
 
 const PostDetail = () => {
   const { id } = useParams()
@@ -11,11 +11,12 @@ const PostDetail = () => {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState("")
   const [user, setUser] = useState(null)
-  const [deleteError, setDeleteError] = useState("")
 
   useEffect(() => {
     const fetchPost = async () => {
       try {
+        console.log("Fetching post with ID:", id)
+
         const token = localStorage.getItem("token")
 
         if (token) {
@@ -35,52 +36,72 @@ const PostDetail = () => {
     fetchPost()
   }, [id])
 
-  if (loading) return <p>Loading...</p>
-  if (error) return <p>{error}</p>
-
-  return post ? (
-    <div className="post-detail flex flex-wrap gap-8 p-6">
-      <div className="flex-1 min-w-[300px]">
-        <div className="border rounded-lg shadow p-4">
-          <div className="flex items-center gap-3 mb-4">
-            <img
-              src={
-                post.user_id?.profile_picture
-                  ? `http://localhost:3001/${post.user_id.profile_picture}`
-                  : "http://localhost:3001/images/default-avatar.png"
-              }
-              alt="User"
-              width="60"
-              height="60"
-              className="rounded-full object-cover"
-            />
-            <h2 className="font-bold text-lg">{post.user_id?.username}</h2>
-          </div>
-
-          <img
-            src={post.image_url}
-            alt="Post"
-            className="rounded-xl mb-4 max-h-[500px] object-cover"
-          />
-
-          <p className="text-gray-800">{post.caption}</p>
+  // Loading State
+  if (loading) {
+    return (
+      <div className="post-detail-loading">
+        <div className="loading-content">
+          <div className="spinner"></div>
+          <p className="loading-text">Loading post...</p>
         </div>
       </div>
+    )
+  }
 
-      <div className="w-[350px] min-w-[300px]">
-        <CommentSection postId={post._id} user={user} />
+  if (error || !post) {
+    return (
+      <div className="post-detail-error">
+        <div className="error-box">
+          <p className="error-text">Post not found or invalid ID.</p>
+          <Link to="/home" className="post-detail-back-btn">
+            ← Back to feed
+          </Link>
+        </div>
       </div>
+    )
+  }
 
-      <div className="w-full mt-6">
-        <Link
-          to="/home"
-          className="text-blue-500 underline hover:text-blue-700"
-        >
-          ← Back to feed
-        </Link>
+  return (
+    <div className="post-detail-page">
+      <div className="post-detail-container">
+        <div className="post-detail-main">
+          <div className="post-detail-card">
+            {/* User Info */}
+            <div className="post-detail-user">
+              <img
+                src={
+                  post.user_id?.profile_picture
+                    ? `http://localhost:3001/${post.user_id.profile_picture}`
+                    : "http://localhost:3001/images/default-avatar.png"
+                }
+                alt="User"
+                className="post-detail-avatar"
+              />
+              <h2 className="post-detail-username">{post.user_id?.username}</h2>
+            </div>
+
+            <img
+              src={post.image_url}
+              alt="Post"
+              className="post-detail-image"
+            />
+
+            <p className="post-detail-caption">{post.caption}</p>
+          </div>
+        </div>
+
+        <div className="post-detail-sidebar">
+          <CommentSection postId={post._id} user={user} />
+        </div>
+
+        <div className="post-detail-back-section">
+          <Link to="/home" className="post-detail-back-btn">
+            ← Back to feed
+          </Link>
+        </div>
       </div>
     </div>
-  ) : null
+  )
 }
 
 export default PostDetail
