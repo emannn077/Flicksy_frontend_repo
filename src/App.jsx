@@ -28,17 +28,26 @@ const App = () => {
 
   useEffect(() => {
     const token = localStorage.getItem("token")
-    if (token) {
+    const storedUser = localStorage.getItem("user")
+
+    if (token && storedUser) {
       try {
-        const payload = JSON.parse(atob(token.split(".")[1]))
-        setUser(payload)
+        setUser(JSON.parse(storedUser))
       } catch (error) {
-        console.error("Invalid token:", error)
+        console.error("Invalid stored user:", error)
         setUser(null)
       }
     }
+
     setLoadingUser(false)
   }, [])
+
+  // ✅ Redirect to /profile after login
+  useEffect(() => {
+    if (user) {
+      navigate("/profile")
+    }
+  }, [user])
 
   return (
     <>

@@ -8,8 +8,8 @@ import { Camera, RefreshCw, Check } from "lucide-react"
 const CameraPage = () => {
   const webcamRef = useRef(null)
   const [photo, setPhoto] = useState(null)
-  const [caption, setCaption] = useState('') // user caption
-  const [facingMode, setFacingMode] = useState('user')
+  const [caption, setCaption] = useState("") // user caption
+  const [facingMode, setFacingMode] = useState("user")
   const [loading, setLoading] = useState(false)
   const [message, setMessage] = useState("")
   const navigate = useNavigate()
@@ -17,8 +17,8 @@ const CameraPage = () => {
 
   // Detect mode and optional challenge_id from URL
   const queryParams = new URLSearchParams(location.search)
-  const mode = queryParams.get('mode') || 'normal'
-  const challenge_id = queryParams.get('challenge_id') || null
+  const mode = queryParams.get("mode") || "normal"
+  const challenge_id = queryParams.get("challenge_id") || null
 
   // Capture photo
   const capture = () => {
@@ -28,19 +28,19 @@ const CameraPage = () => {
 
   const retake = () => {
     setPhoto(null)
-    setCaption('')
+    setCaption("")
   }
 
   const switchCamera = () => {
-    setFacingMode((prev) => (prev === 'user' ? 'environment' : 'user'))
+    setFacingMode((prev) => (prev === "user" ? "environment" : "user"))
   }
 
   // Post photo
   const postPhoto = async () => {
     setLoading(true)
     try {
-      const user_id = localStorage.getItem('user_id')
-      const token = localStorage.getItem('token')
+      const user_id = localStorage.getItem("user_id")
+      const token = localStorage.getItem("token")
 
       if (!user_id || !token) {
         setMessage("Please log in before posting!")
@@ -73,7 +73,7 @@ const CameraPage = () => {
       console.error("Uploading Failed :", err)
       setMessage(
         `Failed to post photo. ${
-          err.response?.data?.message || 'Check console for details.'
+          err.response?.data?.message || "Check console for details."
         }`
       )
       setLoading(false)
@@ -97,7 +97,7 @@ const CameraPage = () => {
             audio={false}
             screenshotFormat="image/jpeg"
             videoConstraints={videoConstraints}
-            mirrored={facingMode === 'user'}
+            mirrored={facingMode === "user"}
             className="w-full h-full object-cover"
           />
         ) : (
@@ -153,7 +153,7 @@ const CameraPage = () => {
               onClick={postPhoto}
               disabled={loading}
               className={`${
-                loading ? 'bg-gray-400' : 'bg-green-500'
+                loading ? "bg-gray-400" : "bg-green-500"
               } w-16 h-16 rounded-full flex items-center justify-center shadow-lg`}
             >
               <Check className="text-white" size={32} />

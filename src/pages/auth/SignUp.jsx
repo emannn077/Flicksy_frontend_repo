@@ -1,11 +1,12 @@
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import DomeGallery from "../../components/DomeGallery"
-import axios from "axios"
+
 import "/src/App.css"
 
 const SignUp = () => {
-  let navigate = useNavigate()
+  const navigate = useNavigate()
+
   const initialState = {
     firstName: "",
     lastName: "",
@@ -13,175 +14,157 @@ const SignUp = () => {
     email: "",
     password: "",
     confirmPassword: "",
-    profile_picture: "",
   }
 
   const [formValues, setFormValues] = useState(initialState)
-<<<<<<< HEAD
   const [selectedImage, setSelectedImage] = useState(null)
-=======
   const [error, setError] = useState("")
->>>>>>> main
 
+  // Handle text inputs
   const handleChange = (e) => {
     setFormValues({ ...formValues, [e.target.name]: e.target.value })
   }
 
+  // Handle file input
   const handleFileChange = (e) => {
-    setSelectedImage(e.target.files)
-    setFormValues({ ...formValues, profile_picture: e.target.files })
+    setSelectedImage(e.target.files[0]) // ✅ Only the first file
   }
 
+  // Handle submit
   const handleSubmit = async (e) => {
     e.preventDefault()
+    setError("")
 
-<<<<<<< HEAD
-    const formData = new FormData()
-    formData.append('firstName', formValues.firstName)
-    formData.append('lastName', formValues.lastName)
-    formData.append('username', formValues.username)
-    formData.append('email', formValues.email)
-    formData.append('password', formValues.password)
-    formData.append('profile_picture', selectedImage) // Use selectedImage here
-
-    const response = await axios.post(
-      'http://localhost:3001/auth/sign-up',
-      formData,
-      {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
-      }
-    )
-
-    if (response.status === 200) {
-      setFormValues(initialState)
-      navigate('/sign-in')
-=======
+    // ✅ Check password match first
     if (formValues.password !== formValues.confirmPassword) {
-      setError("Passwords should match")
+      setError("Passwords must match.")
       return
     }
 
     try {
-      const response = await axios.post(
+      const formData = new FormData()
+      formData.append("firstName", formValues.firstName)
+      formData.append("lastName", formValues.lastName)
+      formData.append("username", formValues.username)
+      formData.append("email", formValues.email)
+      formData.append("password", formValues.password)
+      if (selectedImage) formData.append("profile_picture", selectedImage)
+
+      const res = await Client.post(
         "http://localhost:3001/auth/sign-up",
-        formValues
+        formData,
+        {
+          headers: { "Content-Type": "multipart/form-data" },
+        }
       )
 
-      if (response.status === 200) {
+      if (res.status === 200) {
         setFormValues(initialState)
+        setSelectedImage(null)
         navigate("/sign-in")
       }
     } catch (err) {
       console.error("Sign-up error:", err)
-      setError("Error creating account. Please try again.")
->>>>>>> main
+      setError("Failed to create account. Please try again.")
     }
   }
 
   return (
     <>
       <DomeGallery />
-
       <div className="signup-page">
         <div className="signup-box">
           <h2>Sign Up</h2>
 
+          {error && <p className="error">{error}</p>}
+
           <form onSubmit={handleSubmit}>
             <div className="input-class">
-              <label htmlFor="firstName">First Name :</label>
+              <label>First Name:</label>
               <input
                 type="text"
                 name="firstName"
-                placeholder="first name"
-                onChange={handleChange}
                 value={formValues.firstName}
+                onChange={handleChange}
                 required
-                autoComplete="firstName"
               />
             </div>
 
             <div className="input-class">
-              <label htmlFor="lastName">last Name :</label>
+              <label>Last Name:</label>
               <input
                 type="text"
                 name="lastName"
-                placeholder="last name"
-                onChange={handleChange}
                 value={formValues.lastName}
+                onChange={handleChange}
                 required
-                autoComplete="lastName"
               />
             </div>
 
             <div className="input-class">
-              <label htmlFor="username">User Name :</label>
+              <label>Username:</label>
               <input
                 type="text"
                 name="username"
-                placeholder="username"
-                onChange={handleChange}
                 value={formValues.username}
+                onChange={handleChange}
                 required
-                autoComplete="username"
               />
             </div>
 
             <div className="input-class">
-              <label htmlFor="email">Your email :</label>
+              <label>Email:</label>
               <input
                 type="email"
                 name="email"
-                placeholder="example@example.com"
-                onChange={handleChange}
                 value={formValues.email}
+                onChange={handleChange}
                 required
-                autoComplete="email"
               />
             </div>
 
             <div className="input-class">
-              <label htmlFor="password">Your Password :</label>
+              <label>Password:</label>
               <input
                 type="password"
                 name="password"
-                placeholder="Password"
-                onChange={handleChange}
                 value={formValues.password}
+                onChange={handleChange}
                 required
-                autoComplete="off"
               />
             </div>
+
             <div className="input-class">
-              <label>Confirm Password :</label>
+              <label>Confirm Password:</label>
               <input
                 type="password"
                 name="confirmPassword"
-                placeholder="Confirm Password"
                 value={formValues.confirmPassword}
                 onChange={handleChange}
                 required
               />
             </div>
-            <div>
-              <label htmlFor="profile_picture">Image:</label>
+
+            <div className="input-class">
+              <label>Profile Picture:</label>
               <input
-                required
                 type="file"
                 name="profile_picture"
                 onChange={handleFileChange}
+                accept="image/*"
+                required
               />
             </div>
-            <br />
+
             <button
+              type="submit"
               disabled={
                 !formValues.email ||
-                (!formValues.password &&
-                  formValues.password === formValues.confirmPassword)
+                !formValues.password ||
+                formValues.password !== formValues.confirmPassword
               }
             >
-              Sign-Up
+              Sign Up
             </button>
           </form>
         </div>
